@@ -1,5 +1,5 @@
-use crate::types::{AggregatedOut, SegmentInfo};
 use crate::types::ScanRustResult;
+use crate::types::{AggregatedOut, SegmentInfo};
 use std::collections::{BTreeMap, HashSet};
 
 /// Count how many window sizes produced each candidate change-point.
@@ -35,7 +35,15 @@ pub(crate) fn compute_change_points_with_votes(
     let mut cur = vec![all_cps[0]];
 
     for &cp in all_cps.iter().skip(1) {
-        if cp - *cur.last().unwrap() <= tol {
+        let last_cp = match cur.last() {
+            Some(last_cp) => *last_cp,
+            None => {
+                cur.push(cp);
+                continue;
+            }
+        };
+
+        if cp - last_cp <= tol {
             cur.push(cp);
         } else {
             segments.push(cur);
@@ -81,10 +89,14 @@ pub(crate) fn leaders_from_segments(
         let mut best_vote = 0usize;
 
         for (&cp, &vote) in &info.votes {
-            if best_cp.is_none()
-                || vote > best_vote
-                || (vote == best_vote && cp < best_cp.unwrap())
-            {
+            let is_better = match best_cp {
+                Some(current_best_cp) => {
+                    vote > best_vote || (vote == best_vote && cp < current_best_cp)
+                }
+                None => true,
+            };
+
+            if is_better {
                 best_cp = Some(cp);
                 best_vote = vote;
             }

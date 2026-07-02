@@ -1,0 +1,9 @@
+cargo:rustc-check-cfg=cfg(r_4_4)
+cargo:rustc-check-cfg=cfg(r_4_5)
+cargo:rustc-check-cfg=cfg(use_r_ge_version_15)
+cargo:rustc-check-cfg=cfg(use_r_ge_version_16)
+cargo:rustc-check-cfg=cfg(use_r_ge_version_17)
+cargo:warning=[2K   [1m[33mwarning:[0m R_HOME not found. Trying to fetch from R directly.
+cargo:warning=[2K   [1m[32minfo:[0m Running R command: "R.exe" "-s" "-e" "cat(normalizePath(R.home()))"
+cargo:warning=[2K   [1m[33mwarning:[0m Cannot fetch R version from R. Defaulting to most recent configure flag
+cargo:rustc-cfg=r_4_5
