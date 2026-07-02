@@ -1,5 +1,7 @@
 # scanr
 
+<img src="man/figures/logo.svg" align="right" width="160" alt="scanr hex sticker">
+
 [![R-CMD-check](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml)
 
 `scanr` is an R package for sequential change-point detection in univariate
