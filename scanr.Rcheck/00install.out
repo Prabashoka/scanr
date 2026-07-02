@@ -13,39 +13,39 @@ cargo build --lib --release --locked --target x86_64-pc-windows-gnu
 cargo 1.95.0 (f2d3ce0bd 2026-03-21)
 rustc 1.95.0 (59807616e 2026-04-14)
    Compiling proc-macro2 v1.0.106
-   Compiling unicode-ident v1.0.24
    Compiling quote v1.0.45
-   Compiling crossbeam-utils v0.8.21
+   Compiling unicode-ident v1.0.24
    Compiling getrandom v0.3.4
+   Compiling crossbeam-utils v0.8.21
    Compiling cfg-if v1.0.4
    Compiling zerocopy v0.8.48
+   Compiling serde_core v1.0.228
    Compiling extendr-ffi v0.9.0
    Compiling syn v2.0.117
-   Compiling serde_core v1.0.228
    Compiling crossbeam-epoch v0.9.18
    Compiling rand_core v0.9.5
    Compiling zmij v1.0.21
-   Compiling rayon-core v1.13.0
    Compiling paste v1.0.15
+   Compiling rayon-core v1.13.0
    Compiling crossbeam-deque v0.8.6
-   Compiling extendr-api v0.9.0
-   Compiling serde_json v1.0.150
-   Compiling ppv-lite86 v0.2.21
-   Compiling serde v1.0.228
    Compiling lazy_static v1.5.0
+   Compiling serde_json v1.0.150
+   Compiling extendr-api v0.9.0
+   Compiling serde v1.0.228
+   Compiling ppv-lite86 v0.2.21
    Compiling rand_chacha v0.9.0
-   Compiling readonly v0.2.13
    Compiling extendr-macros v0.9.0
    Compiling serde_derive v1.0.228
-   Compiling either v1.15.0
+   Compiling readonly v0.2.13
    Compiling once_cell v1.21.4
    Compiling memchr v2.8.2
+   Compiling either v1.15.0
    Compiling itoa v1.0.18
    Compiling rayon v1.12.0
    Compiling rand v0.9.4
    Compiling rand_xoshiro v0.7.0
    Compiling scanr v0.1.0 (C:\Users\aseelappumud\scan-r\scanr.Rcheck\00_pkg_src\scanr\src\rust)
-    Finished `release` profile [optimized] target(s) in 47.02s
+    Finished `release` profile [optimized] target(s) in 48.62s
 gcc -shared -s -static-libgcc -o scanr.dll tmp.def entrypoint.o rust/target/x86_64-pc-windows-gnu/release/libscanr.a -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -Lc:/rtools45/x86_64-w64-mingw32.static.posix/lib/x64 -Lc:/rtools45/x86_64-w64-mingw32.static.posix/lib -LC:/PROGRA~1/R/R-46~1.1/bin/x64 -lR
 c:\rtools45\X86_64~1.POS\bin\nm.exe: object-773c4b9152dbde5c.object.20d363bd470014b1-cgu.0.rcgu.dwo: no symbols
 c:\rtools45\X86_64~1.POS\bin\nm.exe: addr2line-bcd4f5cef9a990ad.addr2line.4aaf2281467f2aad-cgu.0.rcgu.dwo: no symbols

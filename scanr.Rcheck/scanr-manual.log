@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.7.2)  2 JUL 2026 12:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.7.2)  2 JUL 2026 12:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -319,16 +319,16 @@ Package hyperref Info: Link coloring ON on input line 8.
 \@outlinefile=\write4
 \openout4 = `Rd2.out'.
 
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 23.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 22.
  (c:/Users/aseelappumud/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 33.
+LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 32.
  (c:/Users/aseelappumud/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd
 File: t1zi4.fd 2018/01/14 T1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 10.0pt on input line 33.
+(Font)              scaled to size 10.0pt on input line 32.
  (./Rd2.toc
 LaTeX Font Info:    Trying to load font information for U+msa on input line 1.
  (c:/Users/aseelappumud/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -358,13 +358,13 @@ Package rerunfilecheck Info: File `Rd2.out' has not changed.
 Here is how much of TeX's memory you used:
  10451 strings out of 469157
  161679 string characters out of 5457986
- 576330 words of memory out of 5000000
+ 577330 words of memory out of 5000000
  39173 multiletter control sequences out of 15000+600000
  659141 words of font info for 78 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  91i,5n,95p,253b,746s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/aseelappumud/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><c:/Users/aseelappumud/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/aseelappumud/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/aseelappumud/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/aseelappumud/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (13 pages, 93884 bytes).
+Output written on Rd2.pdf (13 pages, 93828 bytes).
 PDF statistics:
  324 PDF objects out of 1000 (max. 8388607)
  296 compressed objects within 3 object streams

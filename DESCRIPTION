@@ -1,11 +1,10 @@
 Package: scanr
 Type: Package
-Title: Sequential Change-Point Detection with a Rust Backend
+Title: Sequential Change-Point Detection via Nonparametric Inference
 Version: 0.1.0
 Authors@R: person("Ashoka", email = "smashoka123@gmail.com", role = c("aut", "cre"))
 Description: Detects change points in univariate time series using the SCAN
-    framework with adaptive nonparametric inference. The implementation uses a
-    native Rust backend exposed to R via 'extendr'.
+    framework. The implementation uses a native Rust backend exposed to R via 'extendr'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
