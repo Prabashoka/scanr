@@ -1,0 +1,17 @@
+Package: scanr
+Type: Package
+Title: Sequential Change-Point Detection with a Rust Backend
+Version: 0.1.0
+Authors@R: person("Ashoka", email = "smashoka123@gmail.com", role = c("aut", "cre"))
+Description: Detects change points in univariate time series using the SCAN
+    framework with adaptive nonparametric inference. The implementation uses a
+    native Rust backend exposed to R via 'extendr'.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+SystemRequirements: Cargo (Rust's package manager), rustc
+Imports:
+    jsonlite
+Config/rextendr/version: 0.4.2
+NeedsCompilation: yes
+Config/roxygen2/version: 8.0.0

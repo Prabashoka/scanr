@@ -1,0 +1,9 @@
+C:\Users\aseelappumud\scan-r\src\rust\target\x86_64-pc-windows-gnu\debug\deps\extendr_ffi-40e28917404456cb.d: C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\lib.rs C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\graphics.rs C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\altrep.rs C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\symbols.rs C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\backports.rs
+
+C:\Users\aseelappumud\scan-r\src\rust\target\x86_64-pc-windows-gnu\debug\deps\libextendr_ffi-40e28917404456cb.rmeta: C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\lib.rs C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\graphics.rs C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\altrep.rs C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\symbols.rs C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\backports.rs
+
+C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\lib.rs:
+C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\graphics.rs:
+C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\altrep.rs:
+C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\symbols.rs:
+C:\Users\aseelappumud\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\extendr-ffi-0.9.0\src\backports.rs:

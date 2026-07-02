@@ -1,0 +1,21 @@
+CARGO = cargo
+RUST_ROOT = rust
+RUST_TARGET = x86_64-pc-windows-gnu
+RUST_LIB = $(RUST_ROOT)/target/$(RUST_TARGET)/release/libscanr.a
+
+PKG_LIBS = $(RUST_LIB) -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll
+
+all: $(SHLIB)
+
+$(SHLIB): $(RUST_LIB)
+
+$(RUST_LIB):
+	cd $(RUST_ROOT) && \
+	R_VERSION=$$("$${R_HOME}/bin/Rscript" -e "v <- unclass(getRversion())[[1]]; cat(v[1], v[2], v[3], sep = ' ')") && \
+	set -- $$R_VERSION && \
+	$(CARGO) --version && rustc --version && \
+	DEP_R_R_VERSION_MAJOR=$$1 DEP_R_R_VERSION_MINOR=$$2 DEP_R_R_VERSION_PATCH=$$3 \
+	$(CARGO) build --lib --release --locked --target $(RUST_TARGET)
+
+clean:
+	cd $(RUST_ROOT) && $(CARGO) clean

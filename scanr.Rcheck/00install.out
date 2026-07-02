@@ -1,0 +1,80 @@
+* installing *source* package 'scanr' ...
+** this is package 'scanr' version '0.1.0'
+** using staged installation
+** libs
+using C compiler: 'gcc.exe (GCC) 14.3.0'
+gcc  -I"C:/PROGRA~1/R/R-46~1.1/include" -DNDEBUG     -I"c:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall -std=gnu2x  -mfpmath=sse -msse2 -mstackrealign   -c entrypoint.c -o entrypoint.o
+cd rust && \
+R_VERSION=$("${R_HOME}/bin/Rscript" -e "v <- unclass(getRversion())[[1]]; cat(v[1], v[2], v[3], sep = ' ')") && \
+set -- $R_VERSION && \
+cargo --version && rustc --version && \
+DEP_R_R_VERSION_MAJOR=$1 DEP_R_R_VERSION_MINOR=$2 DEP_R_R_VERSION_PATCH=$3 \
+cargo build --lib --release --locked --target x86_64-pc-windows-gnu
+cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+rustc 1.95.0 (59807616e 2026-04-14)
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.45
+   Compiling crossbeam-utils v0.8.21
+   Compiling getrandom v0.3.4
+   Compiling cfg-if v1.0.4
+   Compiling zerocopy v0.8.48
+   Compiling extendr-ffi v0.9.0
+   Compiling syn v2.0.117
+   Compiling serde_core v1.0.228
+   Compiling crossbeam-epoch v0.9.18
+   Compiling rand_core v0.9.5
+   Compiling zmij v1.0.21
+   Compiling rayon-core v1.13.0
+   Compiling paste v1.0.15
+   Compiling crossbeam-deque v0.8.6
+   Compiling extendr-api v0.9.0
+   Compiling serde_json v1.0.150
+   Compiling ppv-lite86 v0.2.21
+   Compiling serde v1.0.228
+   Compiling lazy_static v1.5.0
+   Compiling rand_chacha v0.9.0
+   Compiling readonly v0.2.13
+   Compiling extendr-macros v0.9.0
+   Compiling serde_derive v1.0.228
+   Compiling either v1.15.0
+   Compiling once_cell v1.21.4
+   Compiling memchr v2.8.2
+   Compiling itoa v1.0.18
+   Compiling rayon v1.12.0
+   Compiling rand v0.9.4
+   Compiling rand_xoshiro v0.7.0
+   Compiling scanr v0.1.0 (C:\Users\aseelappumud\scan-r\scanr.Rcheck\00_pkg_src\scanr\src\rust)
+    Finished `release` profile [optimized] target(s) in 47.02s
+gcc -shared -s -static-libgcc -o scanr.dll tmp.def entrypoint.o rust/target/x86_64-pc-windows-gnu/release/libscanr.a -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -Lc:/rtools45/x86_64-w64-mingw32.static.posix/lib/x64 -Lc:/rtools45/x86_64-w64-mingw32.static.posix/lib -LC:/PROGRA~1/R/R-46~1.1/bin/x64 -lR
+c:\rtools45\X86_64~1.POS\bin\nm.exe: object-773c4b9152dbde5c.object.20d363bd470014b1-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: addr2line-bcd4f5cef9a990ad.addr2line.4aaf2281467f2aad-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: gimli-bf3193d08cc59268.gimli.b99ebf9ad01f8164-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: cfg_if-70d9b61c3c9bc2b9.cfg_if.5b23c74522434067-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: windows_link-7a1638dc1e205586.windows_link.c5881b31e3519430-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: rustc_demangle-d402ef0453dd1ace.rustc_demangle.94db77cf5f6ca742-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: rustc_std_workspace_alloc-2970c3e1fb694e17.rustc_std_workspace_alloc.cc89498c200b0292-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: miniz_oxide-348d261405c5b3ff.miniz_oxide.6af32ce21f742bc3-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: adler2-e1cddc1fbc7395ab.adler2.8e77ec650e5bc717-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: unwind-b3cd59f19970c9cd.unwind.930f89bec3f639f-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: libc-fd428a422582e899.libc.67ba8544172a9bf6-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: rustc_std_workspace_core-3cfa2489847e416f.rustc_std_workspace_core.327bcc1b2973207-cgu.0.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: compiler_builtins-37a08fb9d355cb46.compiler_builtins.7e37c3da72dd266-cgu.003.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: compiler_builtins-37a08fb9d355cb46.compiler_builtins.7e37c3da72dd266-cgu.022.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: compiler_builtins-37a08fb9d355cb46.compiler_builtins.7e37c3da72dd266-cgu.027.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: compiler_builtins-37a08fb9d355cb46.compiler_builtins.7e37c3da72dd266-cgu.032.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: compiler_builtins-37a08fb9d355cb46.compiler_builtins.7e37c3da72dd266-cgu.149.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: compiler_builtins-37a08fb9d355cb46.compiler_builtins.7e37c3da72dd266-cgu.150.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: compiler_builtins-37a08fb9d355cb46.compiler_builtins.7e37c3da72dd266-cgu.151.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: compiler_builtins-37a08fb9d355cb46.compiler_builtins.7e37c3da72dd266-cgu.152.rcgu.dwo: no symbols
+c:\rtools45\X86_64~1.POS\bin\nm.exe: compiler_builtins-37a08fb9d355cb46.compiler_builtins.7e37c3da72dd266-cgu.153.rcgu.dwo: no symbols
+installing to C:/Users/aseelappumud/scan-r/scanr.Rcheck/00LOCK-scanr/00new/scanr/libs/x64
+** R
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (scanr)

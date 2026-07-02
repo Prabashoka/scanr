@@ -1,0 +1,26 @@
+cargo:rustc-check-cfg=cfg(r_4_4)
+cargo:rustc-check-cfg=cfg(r_4_5)
+cargo:rustc-check-cfg=cfg(use_r_ge_version_15)
+cargo:rustc-check-cfg=cfg(use_r_ge_version_16)
+cargo:rustc-check-cfg=cfg(use_r_ge_version_17)
+cargo:warning=[2K   [1m[32minfo:[0m R_HOME: C:\PROGRA~1\R\R-46~1.1
+cargo:warning=[2K   [1m[33mwarning:[0m R_INCLUDE_DIR not found. Likely being built outside of R.
+cargo:warning=[2K   [1m[32minfo:[0m Running R command: "R.exe" "--vanilla" "-s" "-e" "cat(normalizePath(R.home('include')))"
+cargo:warning=[2K   [1m[32minfo:[0m R command output: "C:\\Program Files\\R\\R-4.6.1\\include"
+cargo:warning=[2K   [1m[32minfo:[0m Attempting to read version from C:\Program Files\R\R-4.6.1\include\Rversion.h
+cargo:warning=[2K   [1m[32minfo:[0m R version found is: 4.6.1
+cargo:r_home=C:\PROGRA~1\R\R-46~1.1
+cargo:rustc-env=R_HOME=C:\PROGRA~1\R\R-46~1.1
+cargo:r_version_major=4
+cargo:r_version_minor=6
+cargo:r_version_patch=1
+cargo:warning=[2K   [1m[36mnote:[0m R library paths determined to be at: "C:\\PROGRA~1\\R\\R-46~1.1\\bin\\x64"
+cargo:rustc-link-search=\\?\C:\Program Files\R\R-4.6.1\bin\x64
+cargo:rustc-link-lib=dylib=R
+cargo:rustc-cfg=r_4_4
+cargo:rustc-cfg=r_4_5
+cargo:rustc-cfg=use_r_ge_version_15
+cargo:rustc-cfg=use_r_ge_version_16
+cargo:rustc-cfg=use_r_ge_version_17
+cargo:rerun-if-env-changed=R_INCLUDE_DIR
+cargo:warning=[2K   [1m[32m Success:[0m extendr-ffi has been built!
