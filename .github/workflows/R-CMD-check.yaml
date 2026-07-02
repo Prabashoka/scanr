@@ -17,7 +17,7 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
@@ -37,3 +37,5 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-results: always
