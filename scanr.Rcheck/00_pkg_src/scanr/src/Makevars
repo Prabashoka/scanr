@@ -6,7 +6,12 @@ PKG_LIBS = $(RUST_LIB) -ldl -lm
 
 all: $(SHLIB)
 
-$(SHLIB): $(RUST_LIB)
+$(SHLIB): rust-version $(RUST_LIB)
+
+.PHONY: rust-version
+rust-version:
+	$(CARGO) --version
+	rustc --version
 
 $(RUST_LIB):
 	cd $(RUST_ROOT) && \

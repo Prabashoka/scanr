@@ -14,7 +14,6 @@
 #' @param estimated_cps Integer vector of estimated change points.
 #' @param tolerance Maximum absolute distance allowed for a match.
 #' @return A data frame with columns `true`, `estimated`, and `distance`.
-#' @export
 match_change_points <- function(true_cps, estimated_cps, tolerance = 10L) {
   true <- .clean_cps(true_cps)
   estimated <- .clean_cps(estimated_cps)
@@ -70,7 +69,9 @@ match_change_points <- function(true_cps, estimated_cps, tolerance = 10L) {
 
 #' Tolerant precision and recall for change-point detection
 #'
-#' @inheritParams match_change_points
+#' @param true_cps Integer vector of true change points.
+#' @param estimated_cps Integer vector of estimated change points.
+#' @param tolerance Maximum absolute distance allowed for a match.
 #' @return Named numeric vector with `precision` and `recall`.
 #' @export
 precision_recall_cpd <- function(true_cps, estimated_cps, tolerance = 10L) {
@@ -86,7 +87,7 @@ precision_recall_cpd <- function(true_cps, estimated_cps, tolerance = 10L) {
 
 #' Tolerant F1 score for change-point detection
 #'
-#' @inheritParams match_change_points
+#' @inheritParams precision_recall_cpd
 #' @return Numeric F1 score.
 #' @export
 f1_score_cpd <- function(true_cps, estimated_cps, tolerance = 10L) {

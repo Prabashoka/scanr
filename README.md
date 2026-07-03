@@ -51,12 +51,12 @@ one_window <- scan_single_window(
 one_window
 ```
 
-Refine candidate change points or compute distances directly:
+Localize candidate change points or compute distances directly:
 
 ```r
-refine_cusum(x[120:180])
-refine_wasserstein(x[120:180])
-wasserstein_statistic(x[1:100], x[151:250])
+ts_cusum(x[120:180])
+ts_wasserstein(x[120:180])
+one_wasserstein_distance(x[1:100], x[151:250])
 ipm_statistic(x[1:100], x[151:250])
 ```
 

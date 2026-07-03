@@ -2,15 +2,31 @@ Package: scanr
 Type: Package
 Title: Sequential Change-Point Detection via Nonparametric Inference
 Version: 0.1.0
-Authors@R: person("Ashoka", email = "smashoka123@gmail.com", role = c("aut", "cre"))
+Authors@R: c(
+    person("Ashoka", "Prabashwara", email = "smashoka123@gmail.com", role = c("aut", "cre")),
+    person("Patricia", "Menéndez", role = "aut",
+           comment = c(ORCID = "0000-0003-0701-6315")),
+    person("Liam", "Hodgkinson", role = "aut"),
+    person("Stuart", "Lee", role = "aut", comment = c(ORCID = "0000-0003-1179-8436"))
+    )
 Description: Detects change points in univariate time series using the SCAN
     framework. The implementation uses a native Rust backend exposed to R via 'extendr'.
-License: MIT + file LICENSE
+License: CC BY-NC-ND 4.0 + file LICENSE
+Language: en-US
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0
 SystemRequirements: Cargo (Rust's package manager), rustc
 Imports:
-    jsonlite
+    ggplot2,
+    jsonlite,
+    rlang
+Suggests:
+    knitr,
+    quarto
+VignetteBuilder: quarto
+URL: https://github.com/Prabashoka/scanr
+BugReports: https://github.com/Prabashoka/scanr/issues
 Config/rextendr/version: 0.4.2
 NeedsCompilation: yes
 Config/roxygen2/version: 8.0.0

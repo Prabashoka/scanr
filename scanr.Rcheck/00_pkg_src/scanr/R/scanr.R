@@ -241,7 +241,7 @@ scan_single_window <- function(x,
 #' @param x Numeric vector.
 #' @return Integer split position.
 #' @export
-refine_cusum <- function(x) {
+ts_cusum <- function(x) {
   as.integer(.scanr_parse(.refine_cusum_json(.as_numeric_series(x))))
 }
 
@@ -249,7 +249,7 @@ refine_cusum <- function(x) {
 #' @param x Numeric vector.
 #' @return A list with `change_point` and `statistics`.
 #' @export
-refine_wasserstein <- function(x) {
+ts_wasserstein <- function(x) {
   out <- .scanr_parse(.refine_wasserstein_json(.as_numeric_series(x)))
   list(
     change_point = as.integer(out$change_point),
@@ -272,12 +272,12 @@ swal_statistic <- function(x, change_type = c("distribution", "mean", "var")) {
 #' @param right Numeric vector.
 #' @return Numeric distance.
 #' @export
-wasserstein_statistic <- function(left, right) {
+one_wasserstein_distance <- function(left, right) {
   as.numeric(.scanr_parse(.wasserstein_statistic_json(as.numeric(left), as.numeric(right))))
 }
 
 #' Integral probability metric statistic
-#' @inheritParams wasserstein_statistic
+#' @inheritParams one_wasserstein_distance
 #' @return Numeric distance.
 #' @export
 ipm_statistic <- function(left, right) {
