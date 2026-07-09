@@ -1,7 +1,7 @@
 <img src="man/scan_logo/scanr-logo.png" align="right" width="140" alt="scanr logo">
 
 <p>
-  <font size="6"><strong>scanr</strong></font>
+  <font size="14"><strong>scanr</strong></font>
 </p>
 
 [![R-CMD-check](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml)
