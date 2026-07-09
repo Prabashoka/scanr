@@ -11,12 +11,12 @@ time series. The R interface calls a native Rust backend through `extendr`.
 
 Users can install the package from CRAN and load it as follows:
 
-```{r}
+```r
 #| eval: false
 install.packages("scanr")
 ```
 
-```{r}
+```r
 library(scanr)
 ```
 
@@ -26,7 +26,7 @@ The example below simulates a time series of length \(n = 20{,}000\) with
 10 change-points in the mean. The `scan_cpd()` function is then applied using
 several window sizes sampled uniformly from the interval \([50,\; n^{2/3}]\).
 
-```{r}
+```r
 set.seed(1234)
 
 n <- 20000
@@ -56,7 +56,7 @@ change_points
 
 Detect change points using `scan_cpd` function.
 
-```{r}
+```r
 fit_mean <- scan_cpd(
   x_mean,
   window_sizes = c(100, 164, 227, 291, 355, 418, 482, 546, 609, 673, 737),
