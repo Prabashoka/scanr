@@ -1,3 +1,5 @@
+<img src="man/figures/logo-option-1.svg" align="right" width="140" alt="scanr logo">
+
 # scanr
 [![R-CMD-check](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml)
 
@@ -6,64 +8,66 @@ time series. The R interface calls a native Rust backend through `extendr`.
 
 ## Installation
 
-From the package root:
+Users can install the package from CRAN and load it as follows:
 
-```r
-install.packages("remotes")
-remotes::install_local(".")
+```{r}
+#| eval: false
+install.packages("scanr")
 ```
 
-You need Rust and Cargo available on your `PATH` because the package compiles a
-native backend.
+```{r}
+library(scanr)
+```
 
 ## Basic Usage
 
-The example below simulates a series with two changes in mean and then runs
-`scan_cpd()` across several local window sizes.
+The example below simulates a time series of length \(n = 20{,}000\) with
+10 change-points in the mean. The `scan_cpd()` function is then applied using
+several window sizes sampled uniformly from the interval \([50,\; n^{2/3}]\).
 
-```r
-library(scanr)
+```{r}
+set.seed(1234)
 
-set.seed(123)
+n <- 20000
 
-true_cps <- c(200, 400)
-x <- c(
-  rnorm(200, mean = 0, sd = 1),
-  rnorm(200, mean = 2, sd = 1),
-  rnorm(200, mean = -1, sd = 1)
+change_points <- c(
+  952, 1905, 2858, 3810, 4763, 5715, 6668, 7620, 8573, 9525,
+  10478, 11430, 12383, 13335, 14288, 15240, 16193, 17145, 18098,
+  19050
 )
 
-fit <- scan_cpd(
-  x,
-  window_sizes = c(40, 60, 80),
-  n_boot = 200,
-  random_state = 123,
+means <- c(
+  0, 2, -1, 3, 0.5, -2, 2, 5, -0.5, 2.5, 0, -2.5, -1.5, 1.5,
+  3, 1, 0, 1.25, -2, 3.5, -1.5
+)
+
+segment_starts <- c(1L, change_points + 1L)
+segment_ends <- c(change_points, n)
+x_mean <- numeric(n)
+
+for (j in seq_along(means)) {
+  segment_index <- segment_starts[j]:segment_ends[j]
+  x_mean[segment_index] <- rnorm(length(segment_index), mean = means[j], sd = 1)
+}
+
+change_points
+```
+
+Detect change points using `scan_cpd` function.
+
+```{r}
+fit_mean <- scan_cpd(
+  x_mean,
+  window_sizes = c(100, 164, 227, 291, 355, 418, 482, 546, 609, 673, 737),
+  n_boot = 400,
+  random_state = 1234,
   change_type = "mean",
   n_jobs = 1
 )
 
-fit
-fit$change_points
-
-cpd_metrics(
-  true_cps = true_cps,
-  estimated_cps = fit$change_points,
-  n = length(x),
-  tolerance = 20
-)
-
-vis_change_points(
-  x,
-  fit,
-  true_change_points = true_cps,
-  x_label = "Time",
-  y_label = "Value"
-)
+fit_mean
 ```
 
-## Package Contents
+## Reference
 
-- `R/`: exported R functions and wrappers.
-- `src/`: Rust implementation and extendr registration code.
-- `DESCRIPTION`, `NAMESPACE`, `LICENSE`, `Cargo.toml`, and `Cargo.lock`: package
-  metadata and build configuration.
+Include the paper here..
