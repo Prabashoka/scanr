@@ -22,9 +22,9 @@ library(scanr)
 
 ## Basic Usage
 
-The example below simulates a time series of length \(n = 20{,}000\) with
+The example below simulates a time series of length 20,000 with
 10 change-points in the mean. The `scan_cpd()` function is then applied using
-several window sizes sampled uniformly from the interval \([50,\; n^{2/3}]\).
+several window sizes sampled uniformly from the interval [50, 737].
 
 ```r
 set.seed(1234)
