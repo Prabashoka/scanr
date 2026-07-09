@@ -6,13 +6,13 @@
     GNU Fortran (GCC) 14.3.0
 * running under: Windows 10 x64 (build 19045)
 * using session charset: UTF-8
-* current time: 2026-07-03 02:30:10 UTC
+* current time: 2026-07-09 04:36:57 UTC
 * using option '--as-cran'
 * checking for file 'scanr/DESCRIPTION' ... OK
 * checking extension type ... Package
 * this is package 'scanr' version '0.1.0'
 * package encoding: UTF-8
-* checking CRAN incoming feasibility ... [18s] NOTE
+* checking CRAN incoming feasibility ... [17s] NOTE
 Maintainer: 'Ashoka Prabashwara <smashoka123@gmail.com>'
 
 New submission
@@ -431,7 +431,7 @@ File 'LICENSE':
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking serialization versions ... OK
-* checking whether package 'scanr' can be installed ... [60s] OK
+* checking whether package 'scanr' can be installed ... [59s] OK
 * used C compiler: 'gcc.exe (GCC) 14.3.0'
 * checking installed package size ... OK
 * checking package directory ... OK

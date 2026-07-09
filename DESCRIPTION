@@ -1,4 +1,4 @@
-Package: scanr
+Package: Scanr
 Type: Package
 Title: Sequential Change-Point Detection via Nonparametric Inference
 Version: 0.1.0
@@ -25,8 +25,8 @@ Suggests:
     knitr,
     quarto
 VignetteBuilder: quarto
-URL: https://github.com/Prabashoka/scanr
-BugReports: https://github.com/Prabashoka/scanr/issues
+URL: https://github.com/Prabashoka/Scanr, https://github.com/Prabashoka/Scanr/blob/main/vignettes/scanr-introduction.qmd
+BugReports: https://github.com/Prabashoka/Scanr/issues
 Config/rextendr/version: 0.4.2
 NeedsCompilation: yes
 Config/roxygen2/version: 8.0.0

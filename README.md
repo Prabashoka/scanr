@@ -1,7 +1,7 @@
-# scanr
-[![R-CMD-check](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml)
+# Scanr
+[![R-CMD-check](https://github.com/Prabashoka/Scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/Scanr/actions/workflows/R-CMD-check.yaml)
 
-`scanr` is an R package for sequential change-point detection in univariate
+`Scanr` is an R package for sequential change-point detection in univariate
 time series. The R interface calls a native Rust backend through `extendr`.
 
 ## Installation
@@ -19,7 +19,7 @@ native backend.
 ## Basic Usage
 
 ```r
-library(scanr)
+library(Scanr)
 
 set.seed(123)
 x <- c(rnorm(150, 0, 1), rnorm(150, 1.8, 1), rnorm(150, -0.7, 1))

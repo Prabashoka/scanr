@@ -11,7 +11,7 @@ vis_time_series(
   index = NULL,
   x_label = "Time",
   y_label = "Value",
-  title = "Time series",
+  title = NULL,
   ...
 )
 }
