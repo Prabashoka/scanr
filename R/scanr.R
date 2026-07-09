@@ -1,7 +1,7 @@
 .scanr_parse <- function(payload) {
   out <- jsonlite::fromJSON(payload, simplifyVector = FALSE)
   if (!isTRUE(out$ok)) {
-    stop(out$error %||% "Scanr Rust backend returned an unknown error", call. = FALSE)
+    stop(out$error %||% "scanr Rust backend returned an unknown error", call. = FALSE)
   }
   out$result
 }
@@ -286,7 +286,7 @@ ipm_statistic <- function(left, right) {
 
 #' @export
 print.scanr_result <- function(x, ...) {
-  cat("Scanr change-point result\n")
+  cat("scanr change-point result\n")
   cat("observations:", x$metadata$n_obs, "\n")
   cat("change points:", if (length(x$change_points)) paste(x$change_points, collapse = ", ") else "<none>", "\n")
   invisible(x)
@@ -294,7 +294,7 @@ print.scanr_result <- function(x, ...) {
 
 #' @export
 print.scanr_window_result <- function(x, ...) {
-  cat("Scanr single-window result\n")
+  cat("scanr single-window result\n")
   cat("window size:", x$window_size, "\n")
   cat("change points:", if (length(x$change_points)) paste(x$change_points, collapse = ", ") else "<none>", "\n")
   invisible(x)

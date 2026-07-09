@@ -1,4 +1,4 @@
-library(Scanr)
+library(scanr)
 
 set.seed(123)
 x <- c(rnorm(60), rnorm(60, mean = 1.5))

@@ -1,4 +1,4 @@
-useDynLib(Scanr, .registration = TRUE)
+useDynLib(scanr, .registration = TRUE)
 importFrom(rlang,.data)
 importFrom(stats,setNames)
 importFrom(utils,head)

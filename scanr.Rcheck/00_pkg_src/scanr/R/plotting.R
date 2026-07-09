@@ -69,7 +69,7 @@ vis_time_series <- function(x,
                             index = NULL,
                             x_label = "Time",
                             y_label = "Value",
-                            title = "Time series",
+                            title = NULL,
                             ...) {
   df <- .plot_series_data(x, index = index)
   detected <- .map_cps_to_axis(change_points, df$t)
@@ -107,12 +107,22 @@ vis_time_series <- function(x,
 
   p <- p +
     ggplot2::scale_color_manual(
+      name = NULL,
       values = c("Detected change points" = .scanr_orange, "True change points" = "black"),
       drop = TRUE
     ) +
     ggplot2::scale_linetype_manual(
-      values = c("Detected change points" = "dashed", "True change points" = "dotted"),
+      name = NULL,
+      values = c("Detected change points" = "solid", "True change points" = "dotted"),
       drop = TRUE
+    ) +
+    ggplot2::guides(
+      color = ggplot2::guide_legend(nrow = 1),
+      linetype = ggplot2::guide_legend(nrow = 1)
+    ) +
+    ggplot2::theme(
+      legend.position = "bottom",
+      legend.direction = "horizontal"
     )
 
   .attach_plot_data(p, data = df, detected = detected, truth = truth)
@@ -144,7 +154,7 @@ vis_change_points <- function(x,
     index = index,
     x_label = x_label,
     y_label = y_label,
-    title = title %||% "Detected change points",
+    title = title %||% "",
     ...
   )
 }

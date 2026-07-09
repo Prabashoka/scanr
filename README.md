@@ -1,7 +1,7 @@
-# Scanr
-[![R-CMD-check](https://github.com/Prabashoka/Scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/Scanr/actions/workflows/R-CMD-check.yaml)
+# scanr
+[![R-CMD-check](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml)
 
-`Scanr` is an R package for sequential change-point detection in univariate
+`scanr` is an R package for sequential change-point detection in univariate
 time series. The R interface calls a native Rust backend through `extendr`.
 
 ## Installation
@@ -18,46 +18,47 @@ native backend.
 
 ## Basic Usage
 
+The example below simulates a series with two changes in mean and then runs
+`scan_cpd()` across several local window sizes.
+
 ```r
-library(Scanr)
+library(scanr)
 
 set.seed(123)
-x <- c(rnorm(150, 0, 1), rnorm(150, 1.8, 1), rnorm(150, -0.7, 1))
+
+true_cps <- c(200, 400)
+x <- c(
+  rnorm(200, mean = 0, sd = 1),
+  rnorm(200, mean = 2, sd = 1),
+  rnorm(200, mean = -1, sd = 1)
+)
 
 fit <- scan_cpd(
   x,
-  window_sizes = c(20, 30, 40),
+  window_sizes = c(40, 60, 80),
   n_boot = 200,
   random_state = 123,
-  change_type = "mean"
+  change_type = "mean",
+  n_jobs = 1
 )
 
 fit
 fit$change_points
-fit$scores
-```
 
-Run a single scan window:
-
-```r
-one_window <- scan_single_window(
-  x,
-  window_size = 30,
-  n_boot = 200,
-  random_state = 123,
-  change_type = "mean"
+cpd_metrics(
+  true_cps = true_cps,
+  estimated_cps = fit$change_points,
+  n = length(x),
+  tolerance = 20
 )
 
-one_window
-```
-
-Localize candidate change points or compute distances directly:
-
-```r
-ts_cusum(x[120:180])
-ts_wasserstein(x[120:180])
-one_wasserstein_distance(x[1:100], x[151:250])
-ipm_statistic(x[1:100], x[151:250])
+vis_change_points(
+  x,
+  fit,
+  true_change_points = true_cps,
+  x_label = "Time",
+  y_label = "Value"
+)
 ```
 
 ## Package Contents

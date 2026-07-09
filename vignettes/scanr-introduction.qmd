@@ -1,12 +1,12 @@
 ---
-title: "Getting Started with Scanr"
+title: "Getting Started with scanr"
 format:
   html:
     toc: true
     toc-depth: 2
     number-sections: true
 vignette: >
-  %\VignetteIndexEntry{Getting Started with Scanr}
+  %\VignetteIndexEntry{Getting Started with scanr}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 # Overview
 
-The `Scanr` package detects multiple change points in univariate time series
+The `scanr` package detects multiple change points in univariate time series
 using window-based SCAN statistics. The method compares local windows along a
 series, calibrates evidence for changes using resampling, and combines
 information across several window sizes.
@@ -39,13 +39,22 @@ This vignette demonstrates a typical workflow:
 5. repeat the workflow for distributional changes;
 6. use the SWAL statistic for single change-point localization.
 
+
 # Load the Package
 
+Users can install the package from CRAN and load it as follows:
+
 ```{r}
-library(Scanr)
+#| eval: false
+install.packages("scanr")
 ```
 
-Users can install the development version of `Scanr` directly from GitHub.
+```{r}
+library(scanr)
+```
+
+Alternatively, the development version of `scanr` can be installed directly
+from GitHub:
 
 ```{r}
 #| eval: false
@@ -53,7 +62,7 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
 
-devtools::install_github("Prabashoka/Scanr")
+devtools::install_github("Prabashoka/scanr")
 ```
 
 # Example 1 - Changes in Mean
@@ -65,7 +74,7 @@ this example focuses on changes in the mean.
 ```{r}
 set.seed(1234)
 
-n <- 20000L
+n <- 20000
 
 change_points <- c(
   952, 1905, 2858, 3810, 4763, 5715, 6668, 7620, 8573, 9525,
@@ -116,14 +125,26 @@ of a candidate split.
 fit_mean <- scan_cpd(
   x_mean,
   window_sizes = c(100, 164, 227, 291, 355, 418, 482, 546, 609, 673, 737),
-  n_boot = 200L,
-  random_state = 1234L,
+  n_boot = 400,
+  random_state = 1234,
   change_type = "mean",
-  n_jobs = 1L
+  n_jobs = 1
 )
 
 fit_mean
 ```
+
+::: {.callout-note}
+## Remark on bootstrap calibration
+
+The adaptive threshold for declaring a change point is derived through a
+**tapered block bootstrap** across the combined windows. Increasing the number
+of bootstrap samples (`n_boot`) produces a more accurate null distribution at
+the cost of longer computation time; a value of 400–1,000 is typically
+sufficient. The method supports parallel processing via
+[Rust's](https://www.rust-lang.org/) **Rayon** library for computational
+efficiency.
+:::
 
 The estimated change points can be extracted directly from the fitted object.
 
@@ -142,7 +163,7 @@ cpd_metrics(
   true_cps = change_points,
   estimated_cps = fit_mean$change_points,
   n = length(x_mean),
-  tolerance = 20L
+  tolerance = 20
 )
 ```
 
@@ -191,44 +212,19 @@ creates a more challenging distributional change-point problem.
 ```{r}
 set.seed(1234)
 
-n <- 20000L
+n <- 20000
 
-change_points <- c(
-  952, 1905, 2858, 3810, 4763, 5715, 6668, 7620, 8573, 9525,
-  10478, 11430, 12383, 13335, 14288, 15240, 16193, 17145, 18098,
-  19050
-)
+change_points <- c(952, 1905, 2858, 3810, 4763, 5715, 6668, 7620, 8573, 9525, 10478, 11430, 12383, 13335, 14288, 15240, 16193, 17145, 18098, 19050)
 
-segment_starts <- c(1L, change_points + 1L)
+segment_starts <- c(1, change_points + 1)
 segment_ends <- c(change_points, n)
 
-families <- c(
-  "normal", "exponential", "poisson", "t", "gamma", "uniform",
-  "lognormal", "weibull", "chisq", "beta", "normal", "poisson",
-  "exponential", "uniform", "gamma", "t", "lognormal", "beta",
-  "weibull", "chisq", "normal"
-)
+families <- c("normal", "exponential", "poisson", "t", "gamma", "uniform", "lognormal", "weibull", "chisq", "beta", "normal", "poisson", "exponential", "uniform", "gamma", "t", "lognormal", "beta", "weibull", "chisq", "normal")
 
-scale_factors <- c(
-  0.7, 1.4, 0.6, 1.8, 0.75, 2.5, 0.65, 3.0, 0.7, 2.6, 0.6,
-  1.7, 0.65, 2.9, 0.7, 2.8, 0.6, 2.6, 0.65, 3.0, 0.7
-)
+scale_factors <- c(0.7, 1.4, 0.6, 1.8, 0.75, 2.5, 0.65, 3.0, 0.7, 2.6, 0.6, 1.7, 0.65, 2.9, 0.7, 2.8, 0.6, 2.6, 0.65, 3.0, 0.7)
 
 simulate_base <- function(m, family) {
-  z <- switch(
-    family,
-    normal = rnorm(m, mean = 0, sd = 1),
-    exponential = rexp(m, rate = 1),
-    poisson = rpois(m, lambda = 2),
-    gamma = rgamma(m, shape = 2, rate = 1),
-    uniform = runif(m, min = -sqrt(3), max = sqrt(3)),
-    t = rt(m, df = 3),
-    lognormal = rlnorm(m, meanlog = 0, sdlog = 0.7),
-    beta = rbeta(m, shape1 = 2, shape2 = 5),
-    weibull = rweibull(m, shape = 1.5, scale = 1),
-    chisq = rchisq(m, df = 5)
-  )
-
+  z <- switch(family, normal = rnorm(m, mean = 0, sd = 1), exponential = rexp(m, rate = 1), poisson = rpois(m, lambda = 2), gamma = rgamma(m, shape = 2, rate = 1), uniform = runif(m, min = -sqrt(3), max = sqrt(3)), t = rt(m, df = 3), lognormal = rlnorm(m, meanlog = 0, sdlog = 0.7), beta = rbeta(m, shape1 = 2, shape2 = 5), weibull = rweibull(m, shape = 1.5, scale = 1), chisq = rchisq(m, df = 5))
   as.numeric((z - mean(z)) / sd(z))
 }
 
@@ -236,8 +232,7 @@ x_dist <- numeric(n)
 
 for (j in seq_along(families)) {
   segment_index <- segment_starts[j]:segment_ends[j]
-  x_dist[segment_index] <-
-    scale_factors[j] * simulate_base(length(segment_index), families[j])
+  x_dist[segment_index] <-scale_factors[j] * simulate_base(length(segment_index), families[j])
 }
 
 change_points
@@ -267,11 +262,11 @@ distribution-sensitive local statistic rather than a mean-only statistic.
 fit_dist <- scan_cpd(
   x_dist,
   window_sizes = c(100, 145, 191, 236, 282, 327, 373, 418, 464, 509, 555, 600, 646, 691, 737),
-  n_boot = 200L,
-  random_state = 1234L,
+  n_boot = 1000,
+  random_state = 1234,
   change_type = "distribution",
   vote_threshold = 0.5,
-  n_jobs = 1L
+  n_jobs = 1
 )
 ```
 
@@ -288,7 +283,7 @@ cpd_metrics(
   true_cps = change_points,
   estimated_cps = fit_dist$change_points,
   n = length(x_dist),
-  tolerance = 20L
+  tolerance = 20
 )
 ```
 
@@ -317,9 +312,9 @@ localizer. Both methods search for the split that best separates the left and
 right sides of the local region.
 
 ```{r}
-set.seed(2024)
+set.seed(1234)
 
-true_single_cp <- 150L
+true_single_cp <- 150
 mean_region <- c(
   rnorm(true_single_cp, mean = 0, sd = 1),
   rnorm(true_single_cp, mean = 2, sd = 1)
@@ -328,43 +323,8 @@ mean_region <- c(
 c(
   truth = true_single_cp,
   cusum = ts_cusum(mean_region),
-  swal_mean = swal_statistic(mean_region, change_type = "mean"),
   swal_distribution = swal_statistic(mean_region, change_type = "distribution")
 )
-```
-
-The CUSUM localization curve can be plotted directly from the centered
-cumulative sum. The dashed vertical line marks the split returned by
-`ts_cusum()`.
-
-```{r}
-#| fig.width: 8
-#| fig.height: 4
-mean_region_center <- mean(mean_region)
-cusum_curve <- data.frame(
-  split = seq_len(length(mean_region) - 1L),
-  score = abs(cumsum(mean_region_center - mean_region[-length(mean_region)]))
-)
-cusum_cp <- ts_cusum(mean_region)
-
-ggplot2::ggplot(cusum_curve, ggplot2::aes(x = split, y = score)) +
-  ggplot2::geom_line(color = "#00008B", linewidth = 0.8) +
-  ggplot2::geom_vline(
-    xintercept = cusum_cp,
-    color = "#f5710a",
-    linetype = "dashed",
-    linewidth = 0.7
-  ) +
-  ggplot2::labs(
-    x = "Candidate split",
-    y = "CUSUM statistic",
-    title = ""
-  ) +
-  ggplot2::theme_minimal() +
-  ggplot2::theme(
-    panel.grid.major = ggplot2::element_line(color = "#D9D9D9", linetype = "dotted"),
-    panel.grid.minor = ggplot2::element_blank()
-  )
 ```
 
 The distributional version is more general. It can localize changes where the
@@ -373,7 +333,7 @@ variance, change sharply. In the example below, both segments have mean zero,
 but the second segment has a much larger standard deviation.
 
 ```{r}
-set.seed(2024)
+set.seed(1234)
 
 var_region <- c(
   rnorm(true_single_cp, mean = 0, sd = 0.5),
@@ -383,9 +343,7 @@ var_region <- c(
 c(
   truth = true_single_cp,
   cusum = ts_cusum(var_region),
-  swal_variance = swal_statistic(var_region, change_type = "var"),
-  swal_distribution = swal_statistic(var_region, change_type = "distribution"),
-  wasserstein = ts_wasserstein(var_region)$change_point
+  swal_distribution = swal_statistic(var_region, change_type = "distribution")
 )
 ```
 
@@ -395,29 +353,13 @@ that localization curve, making it easier to inspect where the statistic is
 maximized.
 
 ```{r}
-#| fig.width: 8
-#| fig.height: 4
 vis_swal_curve(
   var_region,
-  start = 1L,
+  start = 1,
   end = length(var_region),
   x_label = "Candidate split",
   y_label = "Scaled Wasserstein statistic",
   title = ""
-)
-```
-
-The package also exposes the distance calculations used by the distributional
-localizers. These can be useful for diagnostics or for comparing two fixed
-samples directly.
-
-```{r}
-left_sample <- var_region[1:true_single_cp]
-right_sample <- var_region[(true_single_cp + 1L):length(var_region)]
-
-c(
-  wasserstein_distance = one_wasserstein_distance(left_sample, right_sample),
-  ipm_statistic = ipm_statistic(left_sample, right_sample)
 )
 ```
 

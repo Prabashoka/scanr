@@ -13,8 +13,6 @@
 ^src/.*\.pdb$
 ^commands\.txt$
 ^texput\.log$
-^Scanr-manual\.pdf$
-^Scanr_[^/]*\.tar\.gz$
 ^scanr-manual\.pdf$
 ^scanr_[^/]*\.tar\.gz$
 ^scanr\.Rcheck$

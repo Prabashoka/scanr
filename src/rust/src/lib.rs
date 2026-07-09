@@ -1,4 +1,4 @@
-//! Rust backend for the R `Scanr` package.
+//! Rust backend for the R `scanr` package.
 //!
 //! The implementation is split into small modules:
 //! - `stats`: prefix sums and simple summaries
