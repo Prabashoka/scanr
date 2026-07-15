@@ -1,20 +1,35 @@
 Package: scanr
 Type: Package
-Title: Sequential Change-Point Detection with a Rust Backend
+Title: Sequential Change-Point Detection via Nonparametric Inference
 Version: 0.1.0
-Authors@R: person("Aseel", "Appumud", email = "smashoka123@gmail.com", role = c("aut", "cre"))
+Authors@R: c(
+    person("Ashoka", "Prabashwara", email = "smashoka123@gmail.com", role = c("aut", "cre")),
+    person("Patricia", "Menéndez", role = "aut"),
+    person("Liam", "Hodgkinson", role = "aut"),
+    person("Stuart", "Lee", role = "aut")
+    )
 Description: Detects change points in univariate time series using the SCAN
-    framework with adaptive nonparametric inference. The implementation uses a
-    native Rust backend exposed to R via 'extendr'.
-License: MIT + file LICENSE
+    framework. The implementation uses a native Rust backend exposed to R via 'extendr'.
+License: CC BY-NC-ND 4.0 + file LICENSE
+Language: en-US
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-SystemRequirements: Cargo (Rust's package manager), rustc
-Imports: jsonlite
+RoxygenNote: 8.0.0
+SystemRequirements: Cargo (Rust's package manager), rustc, Quarto CLI
+Imports: ggplot2, jsonlite, rlang
+Suggests: knitr, quarto, testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: quarto
+URL: https://github.com/Prabashoka/scanr,
+        https://prabashoka.github.io/scanr-vignette/
+BugReports: https://github.com/Prabashoka/scanr/issues
 Config/rextendr/version: 0.4.2
 NeedsCompilation: yes
 Config/roxygen2/version: 8.0.0
-Author: Aseel Appumud [aut, cre]
-Maintainer: Aseel Appumud <smashoka123@gmail.com>
-Built: R 4.6.1; x86_64-w64-mingw32; 2026-07-01 13:04:21 UTC; windows
+Author: Ashoka Prabashwara [aut, cre],
+  Patricia Menéndez [aut],
+  Liam Hodgkinson [aut],
+  Stuart Lee [aut]
+Maintainer: Ashoka Prabashwara <smashoka123@gmail.com>
+Built: R 4.6.1; x86_64-w64-mingw32; 2026-07-15 03:26:35 UTC; windows
 Archs: x64

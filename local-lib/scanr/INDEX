@@ -2,24 +2,26 @@ covering_metric         Segment covering metric
 cpd_metrics             Combined change-point accuracy metrics
 f1_score_cpd            Tolerant F1 score for change-point detection
 ipm_statistic           Integral probability metric statistic
-match_change_points     Match true and estimated change points
-plot_change_points      Plot detected change points from a scan result
-plot_swal_curve         Plot the SWAL/Wasserstein localization curve
-                        for a region
-plot_thresholds         Plot scan statistics and bootstrap thresholds
-plot_time_series        Plot a time series with optional change-point
-                        markers
-plot_vote_scree         Plot retained change-point count by voting
-                        threshold
-plot_window_votes       Plot ensemble vote counts for candidate change
-                        points
+one_wasserstein_distance
+                        One-dimensional Wasserstein distance
 precision_recall_cpd    Tolerant precision and recall for change-point
                         detection
-refine_cusum            Localize a mean change with a CUSUM statistic
-refine_wasserstein      Localize a distributional change with a
-                        Wasserstein statistic
 scan_cpd                Detect change points in a univariate time
                         series
 scan_single_window      Run SCAN for one window size
 swal_statistic          Local SCAN/Wasserstein split statistic
-wasserstein_statistic   One-dimensional Wasserstein distance
+ts_cusum                Localize a mean change with a CUSUM statistic
+ts_wasserstein          Localize a distributional change with a
+                        Wasserstein statistic
+vis_change_points       Visualize detected change points from a scan
+                        result
+vis_swal_curve          Visualize the SWAL/Wasserstein localization
+                        curve for a region
+vis_thresholds          Visualize scan statistics and bootstrap
+                        thresholds
+vis_time_series         Visualize a time series with optional
+                        change-point markers
+vis_vote_scree          Visualize retained change-point count by voting
+                        threshold
+vis_window_votes        Visualize ensemble vote counts for candidate
+                        change points

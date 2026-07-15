@@ -1,0 +1,17 @@
+# R build and check artifacts
+/*.Rcheck/
+/*.tar.gz
+/local-lib/
+
+# Rust build artifacts
+target/
+
+# Generated documentation and build output
+/.quarto/
+/build-out/
+
+# Local R session and TeX files
+.Rhistory
+.RData
+.Ruserdata
+texput.log

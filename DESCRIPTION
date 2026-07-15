@@ -22,7 +22,9 @@ Imports:
     rlang
 Suggests:
     knitr,
-    quarto
+    quarto,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 VignetteBuilder: quarto
 URL: https://github.com/Prabashoka/scanr, https://prabashoka.github.io/scanr-vignette/
 BugReports: https://github.com/Prabashoka/scanr/issues

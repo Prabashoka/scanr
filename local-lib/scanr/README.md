@@ -1,67 +1,74 @@
 # scanr
 
+<img src="man/scan_logo/scanr-logo.png" align="right" width="140" alt="scanr logo">
+
+[![R-CMD-check](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml)
+
 `scanr` is an R package for sequential change-point detection in univariate
 time series. The R interface calls a native Rust backend through `extendr`.
 
 ## Installation
 
-From the package root:
+Users can install the package from CRAN and load it as follows:
 
 ```r
-install.packages("remotes")
-remotes::install_local(".")
+#| eval: false
+install.packages("scanr")
 ```
-
-You need Rust and Cargo available on your `PATH` because the package compiles a
-native backend.
-
-## Basic Usage
 
 ```r
 library(scanr)
-
-set.seed(123)
-x <- c(rnorm(150, 0, 1), rnorm(150, 1.8, 1), rnorm(150, -0.7, 1))
-
-fit <- scan_cpd(
-  x,
-  window_sizes = c(20, 30, 40),
-  n_boot = 200,
-  random_state = 123,
-  change_type = "mean"
-)
-
-fit
-fit$change_points
-fit$scores
 ```
 
-Run a single scan window:
+## Basic Usage
+
+The example below simulates a time series of length 20,000 with
+10 change-points in the mean. The `scan_cpd()` function is then applied using
+several window sizes sampled uniformly from the interval [50, 737].
 
 ```r
-one_window <- scan_single_window(
-  x,
-  window_size = 30,
-  n_boot = 200,
-  random_state = 123,
-  change_type = "mean"
+set.seed(1234)
+
+n <- 20000
+
+change_points <- c(
+  952, 1905, 2858, 3810, 4763, 5715, 6668, 7620, 8573, 9525,
+  10478, 11430, 12383, 13335, 14288, 15240, 16193, 17145, 18098,
+  19050
 )
 
-one_window
+means <- c(
+  0, 2, -1, 3, 0.5, -2, 2, 5, -0.5, 2.5, 0, -2.5, -1.5, 1.5,
+  3, 1, 0, 1.25, -2, 3.5, -1.5
+)
+
+segment_starts <- c(1L, change_points + 1L)
+segment_ends <- c(change_points, n)
+x_mean <- numeric(n)
+
+for (j in seq_along(means)) {
+  segment_index <- segment_starts[j]:segment_ends[j]
+  x_mean[segment_index] <- rnorm(length(segment_index), mean = means[j], sd = 1)
+}
+
+change_points
 ```
 
-Refine candidate change points or compute distances directly:
+Detect change points using `scan_cpd` function.
 
 ```r
-refine_cusum(x[120:180])
-refine_wasserstein(x[120:180])
-wasserstein_statistic(x[1:100], x[151:250])
-ipm_statistic(x[1:100], x[151:250])
+fit_mean <- scan_cpd(
+  x_mean,
+  window_sizes = c(100, 164, 227, 291, 355, 418, 482, 546, 609, 673, 737),
+  n_boot = 400,
+  random_state = 1234,
+  change_type = "mean",
+  n_jobs = 1
+)
+
+fit_mean
 ```
 
-## Package Contents
+## Reference
 
-- `R/`: exported R functions and wrappers.
-- `src/`: Rust implementation and extendr registration code.
-- `DESCRIPTION`, `NAMESPACE`, `LICENSE`, `Cargo.toml`, and `Cargo.lock`: package
-  metadata and build configuration.
+Include the paper here..
