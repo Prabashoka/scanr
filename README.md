@@ -1,6 +1,6 @@
 # scanr
 
-<img src="man/scan_logo/scanr-logo.pdf" align="right" width="140" alt="scanr logo">
+<img src="man/scan_logo/scanr_logo.pdf" align="right" width="140" alt="scanr logo">
 
 [![R-CMD-check](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml)
 
