@@ -12,6 +12,7 @@ scan_cpd(
   vote_threshold = 0.5,
   min_window = 15L,
   max_window = NULL,
+  n_windows = 5L,
   block_length = NULL,
   taper = c("tukey", "none"),
   tolerance = NULL,
@@ -40,6 +41,9 @@ change points.}
 
 \item{max_window}{Maximum default window size when \code{window_sizes} is \code{NULL}.}
 
+\item{n_windows}{Number of evenly spaced default window sizes when
+\code{window_sizes} is \code{NULL}.}
+
 \item{block_length}{Optional tapered block bootstrap block length.}
 
 \item{taper}{Taper shape, either \code{"tukey"} or \code{"none"}.}
@@ -64,4 +68,16 @@ An object of class \code{scanr_result}.
 }
 \description{
 Detect change points in a univariate time series
+}
+\examples{
+set.seed(123)
+x <- c(rnorm(30), rnorm(30, mean = 3))
+fit <- scan_cpd(
+  x,
+  window_sizes = 10L,
+  n_boot = 10L,
+  random_state = 123L,
+  change_type = "mean"
+)
+fit
 }

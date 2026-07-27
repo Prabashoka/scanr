@@ -17,3 +17,6 @@ Numeric distance.
 \description{
 One-dimensional Wasserstein distance
 }
+\examples{
+one_wasserstein_distance(c(0, 1, 2), c(1, 2, 3))
+}

@@ -19,8 +19,8 @@ test_that("refinement statistics localize an unambiguous change", {
 
   wasserstein <- ts_wasserstein(x)
   expect_identical(wasserstein$change_point, 5L)
-  expect_length(wasserstein$statistics, length(x))
-  expect_true(is.na(wasserstein$statistics[[1L]]))
+  expect_length(wasserstein$statistics, length(x) - 1L)
+  expect_true(all(is.finite(wasserstein$statistics)))
 })
 
 test_that("seeded detector calls are reproducible", {
@@ -28,11 +28,13 @@ test_that("seeded detector calls are reproducible", {
   x <- c(rnorm(30), rnorm(30, mean = 4))
   args <- list(
     x = x,
-    window_sizes = 10L,
-    n_boot = 10L,
-    random_state = 123L,
+    min_window = 10,
+    max_window = 12,
+    n_windows = 3,
+    n_boot = 10,
+    random_state = 123,
     change_type = "mean",
-    n_jobs = 1L
+    n_jobs = 1
   )
 
   first <- do.call(scan_cpd, args)
@@ -43,4 +45,13 @@ test_that("seeded detector calls are reproducible", {
   expect_equal(first$scores, second$scores)
   expect_identical(first$metadata$n_obs, length(x))
   expect_identical(first$metadata$index_base, "R split position")
+  expect_identical(
+    first$parameters$window_sizes,
+    default_window_sizes(
+      length(x),
+      min_window = 10,
+      max_window = 12,
+      n_windows = 3
+    )
+  )
 })

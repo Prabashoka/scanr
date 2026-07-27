@@ -21,22 +21,95 @@
   x
 }
 
-.choose_default_windows <- function(n, min_window, max_window) {
+#' Choose default scan window sizes
+#'
+#' Randomly samples window sizes from a discrete uniform distribution for a series
+#' of length `n`. The upper
+#' bound defaults to `floor(n^{2/3})`. 
+#'
+#' @param n Number of observations in the series.
+#' @param min_window Smallest window size in the grid.
+#' @param max_window Optional largest window size. If `NULL`, uses
+#'   `floor(n^{2/3})`.
+#' @param n_windows Number of distinct window sizes to sample uniformly between the lower and upper
+#'   bounds. If more sizes are requested than available integers, all available
+#'   sizes are returned.
+#' @param seed Optional non-negative integer seed for reproducible sampling.
+#'   The caller's random-number generator state is preserved.
+#' @return A sorted integer vector of sampled window sizes.
+#' @examples
+#' default_window_sizes(n = 1000L, min_window = 15L)
+#' default_window_sizes(
+#'   n = 1000L,
+#'   min_window = 20L,
+#'   max_window = 100L,
+#'   n_windows = 9L
+#' )
+#' @export
+default_window_sizes <- function(n,
+                                 min_window = 15,
+                                 max_window = NULL,
+                                 n_windows = 5,
+                                 seed = NULL) {
+  n <- as.integer(n)
+  if (length(n) != 1 || is.na(n) || n <= 0) {
+    stop("n must be a positive integer", call. = FALSE)
+  }
+
   min_window <- as.integer(min_window)
-  if (min_window <= 0L) {
+  if (length(min_window) != 1 || is.na(min_window) || min_window <= 0) {
     stop("min_window must be positive", call. = FALSE)
   }
 
-  upper <- if (is.null(max_window)) floor(sqrt(n)) else as.integer(max_window)
-  upper <- max(min_window, upper)
+  if (!is.null(max_window)) {
+    max_window <- as.integer(max_window)
+    if (length(max_window) != 1 || is.na(max_window) || max_window <= 0) {
+      stop("max_window must be positive or NULL", call. = FALSE)
+    }
+  }
+
+  n_windows <- as.integer(n_windows)
+  if (length(n_windows) != 1 || is.na(n_windows) || n_windows <= 0) {
+    stop("n_windows must be positive", call. = FALSE)
+  }
+
+  if (!is.null(seed)) {
+    seed <- as.integer(seed)
+    if (length(seed) != 1L || is.na(seed) || seed < 0L) {
+      stop("seed must be a non-negative integer or NULL", call. = FALSE)
+    }
+
+    had_seed <- exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+    if (had_seed) {
+      previous_seed <- get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+    }
+    on.exit({
+      if (had_seed) {
+        assign(".Random.seed", previous_seed, envir = .GlobalEnv)
+      } else if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
+        rm(".Random.seed", envir = .GlobalEnv)
+      }
+    }, add = TRUE)
+    set.seed(seed)
+  }
+
+  upper <- if (is.null(max_window)) {
+    floor(n^(2 / 3) + sqrt(.Machine$double.eps))
+  } else {
+    as.integer(max_window)
+  }
   upper <- min(upper, max(1L, floor(n / 2L)))
 
   if (min_window > upper) {
     stop("min_window is too large for the length of x", call. = FALSE)
   }
 
-  n_grid <- min(5L, upper - min_window + 1L)
-  unique(as.integer(round(seq(min_window, upper, length.out = n_grid))))
+  n_grid <- min(n_windows, upper - min_window + 1L)
+  sort(sample.int(
+    n = upper - min_window + 1L,
+    size = n_grid,
+    replace = FALSE
+  ) + min_window - 1L)
 }
 
 .normalize_windows <- function(window_sizes, n) {
@@ -106,6 +179,8 @@
 #'   change points.
 #' @param min_window Minimum default window size when `window_sizes` is `NULL`.
 #' @param max_window Maximum default window size when `window_sizes` is `NULL`.
+#' @param n_windows Number of evenly spaced default window sizes when
+#'   `window_sizes` is `NULL`.
 #' @param block_length Optional tapered block bootstrap block length.
 #' @param taper Taper shape, either `"tukey"` or `"none"`.
 #' @param tolerance Distance used to merge nearby candidates across windows.
@@ -117,6 +192,17 @@
 #' @param eps Small positive value used to avoid division by zero.
 #' @param batch_size Bootstrap batch size used by the Rust backend.
 #' @return An object of class `scanr_result`.
+#' @examples
+#' set.seed(123)
+#' x <- c(rnorm(30), rnorm(30, mean = 3))
+#' fit <- scan_cpd(
+#'   x,
+#'   window_sizes = 10L,
+#'   n_boot = 10L,
+#'   random_state = 123L,
+#'   change_type = "mean"
+#' )
+#' fit
 #' @export
 scan_cpd <- function(x,
                      window_sizes = NULL,
@@ -125,6 +211,7 @@ scan_cpd <- function(x,
                      vote_threshold = 0.5,
                      min_window = 15L,
                      max_window = NULL,
+                     n_windows = 5L,
                      block_length = NULL,
                      taper = c("tukey", "none"),
                      tolerance = NULL,
@@ -139,7 +226,12 @@ scan_cpd <- function(x,
   taper <- match.arg(taper)
 
   if (is.null(window_sizes)) {
-    window_sizes <- .choose_default_windows(length(x), min_window, max_window)
+    window_sizes <- default_window_sizes(
+      length(x),
+      min_window,
+      max_window,
+      n_windows
+    )
   }
   window_sizes <- .normalize_windows(window_sizes, length(x))
 
@@ -190,6 +282,7 @@ scan_cpd <- function(x,
       alpha = alpha,
       n_boot = n_boot,
       vote_threshold = vote_threshold,
+      n_windows = n_windows,
       block_length = if (block_length > 0L) block_length else NULL,
       taper = taper,
       change_type = change_type,
@@ -211,6 +304,16 @@ scan_cpd <- function(x,
 #' @inheritParams scan_cpd
 #' @param window_size Positive integer scan window size.
 #' @return An object of class `scanr_window_result`.
+#' @examples
+#' set.seed(123)
+#' x <- c(rnorm(20), rnorm(20, mean = 3))
+#' scan_single_window(
+#'   x,
+#'   window_size = 8L,
+#'   n_boot = 10L,
+#'   random_state = 123L,
+#'   change_type = "mean"
+#' )
 #' @export
 scan_single_window <- function(x,
                                window_size,
@@ -240,6 +343,8 @@ scan_single_window <- function(x,
 #' Localize a mean change with a CUSUM statistic
 #' @param x Numeric vector.
 #' @return Integer split position.
+#' @examples
+#' ts_cusum(c(rep(0, 5), rep(4, 5)))
 #' @export
 ts_cusum <- function(x) {
   as.integer(.scanr_parse(.refine_cusum_json(.as_numeric_series(x))))
@@ -248,6 +353,9 @@ ts_cusum <- function(x) {
 #' Localize a distributional change with a Wasserstein statistic
 #' @param x Numeric vector.
 #' @return A list with `change_point` and `statistics`.
+#' @examples
+#' result <- ts_wasserstein(c(rep(0, 5), rep(4, 5)))
+#' result$change_point
 #' @export
 ts_wasserstein <- function(x) {
   out <- .scanr_parse(.refine_wasserstein_json(.as_numeric_series(x)))
@@ -271,6 +379,8 @@ swal_statistic <- function(x, change_type = c("distribution", "mean", "var")) {
 #' @param left Numeric vector.
 #' @param right Numeric vector.
 #' @return Numeric distance.
+#' @examples
+#' one_wasserstein_distance(c(0, 1, 2), c(1, 2, 3))
 #' @export
 one_wasserstein_distance <- function(left, right) {
   as.numeric(.scanr_parse(.wasserstein_statistic_json(as.numeric(left), as.numeric(right))))

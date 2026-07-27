@@ -15,3 +15,6 @@ Integer split position.
 \description{
 Localize a mean change with a CUSUM statistic
 }
+\examples{
+ts_cusum(c(rep(0, 5), rep(4, 5)))
+}

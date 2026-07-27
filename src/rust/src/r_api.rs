@@ -1,10 +1,8 @@
-use crate::detect::{detect_for_window, run_scan_detector};
-use crate::refine::{refine_cp_cusum, refine_cp_wasserstein, refine_for_change_type};
-use crate::stats::PrefixStats;
-use crate::types::{ChangeType, ScanRustResult};
-use crate::validation::validate_series;
-use crate::wasserstein::wasserstein_1d;
 use extendr_api::prelude::*;
+use scan_core::{
+    detect_for_window, refine_cp_cusum, refine_cp_wasserstein, refine_for_change_type,
+    run_scan_detector, validate_series, wasserstein_1d, ChangeType, PrefixStats, ScanRustResult,
+};
 use serde::Serialize;
 use serde_json::json;
 

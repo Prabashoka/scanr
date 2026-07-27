@@ -45,3 +45,14 @@ An object of class \code{scanr_window_result}.
 \description{
 Run SCAN for one window size
 }
+\examples{
+set.seed(123)
+x <- c(rnorm(20), rnorm(20, mean = 3))
+scan_single_window(
+  x,
+  window_size = 8L,
+  n_boot = 10L,
+  random_state = 123L,
+  change_type = "mean"
+)
+}

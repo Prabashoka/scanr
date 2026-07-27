@@ -22,9 +22,11 @@ library(scanr)
 
 ## Basic Usage
 
-The example below simulates a time series of length 20,000 with
-10 change-points in the mean. The `scan_cpd()` function is then applied using
-several window sizes sampled uniformly from the interval [50, 737].
+The example below simulates a time series of length 20,000 with 20 change
+points in the mean. A scan window contains observations on each side of a
+candidate split. Smaller windows localize nearby changes more precisely but
+contain less information; larger windows are more stable but should remain
+smaller than the spacing between nearby changes.
 
 ```r
 set.seed(1234)
@@ -54,12 +56,25 @@ for (j in seq_along(means)) {
 change_points
 ```
 
-Detect change points using `scan_cpd` function.
+`default_window_sizes()` samples `n_windows` evenly spaced scales between the
+chosen bounds. Its upper bound defaults to `floor(sqrt(n))` and cannot exceed
+`floor(n / 2)`. Here we set problem-informed bounds because the simulated
+changes are roughly 950 observations apart. If `window_sizes` is omitted,
+`scan_cpd()` calls this helper using its `min_window`, `max_window`, and
+`n_windows` arguments.
 
 ```r
+window_sizes <- default_window_sizes(
+  n = length(x_mean),
+  min_window = 100L,
+  max_window = 737L,
+  n_windows = 11L
+)
+window_sizes
+
 fit_mean <- scan_cpd(
   x_mean,
-  window_sizes = c(100, 164, 227, 291, 355, 418, 482, 546, 609, 673, 737),
+  window_sizes = window_sizes,
   n_boot = 400,
   random_state = 1234,
   change_type = "mean",

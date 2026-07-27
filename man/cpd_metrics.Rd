@@ -21,3 +21,11 @@ A list with matches, precision, recall, F1, and covering score.
 \description{
 Combined change-point accuracy metrics
 }
+\examples{
+cpd_metrics(
+  true_cps = c(25L, 50L),
+  estimated_cps = c(24L, 52L),
+  n = 75L,
+  tolerance = 3L
+)
+}

@@ -37,7 +37,8 @@ This vignette demonstrates a typical workflow:
 3. compare estimated change points with the known truth;
 4. inspect the result using diagnostic visualizations;
 5. repeat the workflow for distributional changes;
-6. use the SWAL statistic for single change-point localization.
+6. apply the workflow to hourly Bitcoin closing prices;
+7. use the SWAL statistic for single change-point localization.
 
 
 # Load the Package
@@ -119,16 +120,35 @@ vis_time_series(
 The `window_sizes` argument controls the local scales used by the scan. The
 window sizes should be smaller than the spacing between nearby change points,
 while still being large enough to estimate the local distributions on each side
-of a candidate split.
+of a candidate split. Smaller values improve localization and sensitivity to
+closely spaced changes, while larger values provide more stable local estimates.
+
+`default_window_sizes()` randomly samples the requested number of distinct
+scales. By default, the largest is `floor(n^(2 / 3))`; it is always capped at
+`floor(n / 2)` so that both sides of a candidate split can contain a full
+window. Its optional `seed` argument makes the sampled grid reproducible
+without changing the caller's random-number generator state. Supplying
+problem-informed bounds is useful when the approximate minimum segment length
+is known. Omitting `window_sizes` makes `scan_cpd()` use the same helper with
+its `min_window`, `max_window`, and `n_windows` arguments.
 
 ```{r}
+mean_window_sizes <- default_window_sizes(
+  n = length(x_mean),
+  min_window = 100,
+  max_window = floor(length(x_mean)^(2 / 3)),
+  n_windows = 7,
+  seed = 52
+)
+mean_window_sizes
+
 fit_mean <- scan_cpd(
   x_mean,
-  window_sizes = c(100, 164, 227, 291, 355, 418, 482, 546, 609, 673, 737),
+  window_sizes = mean_window_sizes,
   n_boot = 400,
   random_state = 1234,
   change_type = "mean",
-  n_jobs = 1
+  n_jobs = -1
 )
 
 fit_mean
@@ -259,14 +279,22 @@ For distributional changes, set `change_type = "distribution"`. This uses the
 distribution-sensitive local statistic rather than a mean-only statistic.
 
 ```{r}
+distribution_window_sizes <- default_window_sizes(
+  n = length(x_dist),
+  min_window = 100,
+  max_window = floor(length(x_mean)^(2 / 3)),
+  n_windows = 15,
+  seed = 52
+)
+
 fit_dist <- scan_cpd(
   x_dist,
-  window_sizes = c(100, 145, 191, 236, 282, 327, 373, 418, 464, 509, 555, 600, 646, 691, 737),
+  window_sizes = distribution_window_sizes,
   n_boot = 1000,
   random_state = 1234,
   change_type = "distribution",
   vote_threshold = 0.5,
-  n_jobs = 1
+  n_jobs = -1
 )
 ```
 
@@ -300,6 +328,120 @@ vis_change_points(
   y_label = "Value"
 )
 ```
+
+# Bitcoin Dataset (BTC-USD closing prices)
+
+This example applies change-point detection to hourly Bitcoin closing prices.
+The data are derived from the
+[Bitcoin Historical Data](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data)
+dataset on Kaggle, which contains minute-level OHLC prices and trading volume.
+
+## Load the Bitcoin Data
+
+```{r}
+btc_hourly <- read.csv(
+  "https://raw.githubusercontent.com/Prabashoka/scanr-vignette/refs/heads/main/Data/BTC-hourly-data-closing-price.csv"
+)
+
+btc_hourly$Datetime <- as.POSIXct(
+  btc_hourly$Datetime,
+  tz = "UTC"
+)
+
+head(btc_hourly)
+```
+
+## Choose Window Sizes
+
+The largest candidate window is set to $\lfloor n^{2/3}\rfloor$. A seed of 52
+makes the random selection of 15 window sizes reproducible.
+
+```{r}
+n_btc <- nrow(btc_hourly)
+
+btc_window_sizes <- default_window_sizes(
+  n = n_btc,
+  min_window = 100,
+  max_window = floor(n_btc^(2 / 3)),
+  n_windows = 15,
+  seed = 52
+)
+
+btc_window_sizes
+```
+
+The closing prices are standardized before detection. This changes their units
+but preserves the locations of mean shifts.
+
+```{r}
+x_btc <- as.numeric(scale(btc_hourly$Close))
+```
+
+## Detect Changes in the Mean Bitcoin Price
+
+The ensemble retains candidates whose normalized window vote is at least
+`0.21`. Bootstrap calibration uses a separate seed through `random_state`.
+
+```{r}
+fit_btc <- scan_cpd(
+  x_btc,
+  window_sizes = btc_window_sizes,
+  n_boot = 1000,
+  vote_threshold = 0.21,
+  random_state = 100,
+  change_type = "mean",
+  n_jobs = 1
+)
+
+fit_btc
+```
+
+The detected positions can be mapped back to UTC timestamps and observed
+closing prices.
+
+```{r}
+detected_btc_changes <- btc_hourly[
+  fit_btc$change_points,
+  c("Datetime", "Close"),
+  drop = FALSE
+]
+
+cat("Number of change points:", nrow(detected_btc_changes), "\n")
+detected_btc_changes
+```
+
+## Visualize the Bitcoin Results
+
+```{r}
+#| fig-width: 11
+#| fig-height: 5
+
+vis_change_points(
+  x_btc,
+  fit_btc,
+  index = btc_hourly$Datetime,
+  x_label = "Date (UTC)",
+  y_label = "Standardized hourly closing price",
+  title = "Mean changes in hourly Bitcoin closing prices"
+)
+```
+
+The vote scree shows how the number of retained candidates changes with the
+vote threshold. The selected threshold is marked at `0.21`.
+
+```{r}
+#| fig-width: 11
+#| fig-height: 5
+
+vis_vote_scree(fit_btc)
+```
+
+::: {.callout-caution}
+Bitcoin prices are strongly trending and serially dependent. Detected changes
+identify shifts in the mean price level; they should not be interpreted as
+causal market events.
+:::
+
 
 # SWAL Statistic for Single Change-Point Detection
 

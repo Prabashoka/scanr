@@ -150,6 +150,13 @@ covering_metric <- function(true_cps, estimated_cps, n) {
 #' @inheritParams covering_metric
 #' @param tolerance Maximum absolute distance allowed for a tolerant match.
 #' @return A list with matches, precision, recall, F1, and covering score.
+#' @examples
+#' cpd_metrics(
+#'   true_cps = c(25L, 50L),
+#'   estimated_cps = c(24L, 52L),
+#'   n = 75L,
+#'   tolerance = 3L
+#' )
 #' @export
 cpd_metrics <- function(true_cps, estimated_cps, n, tolerance = 10L) {
   matches <- match_change_points(true_cps, estimated_cps, tolerance = tolerance)

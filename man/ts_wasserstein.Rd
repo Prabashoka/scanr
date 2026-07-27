@@ -15,3 +15,7 @@ A list with \code{change_point} and \code{statistics}.
 \description{
 Localize a distributional change with a Wasserstein statistic
 }
+\examples{
+result <- ts_wasserstein(c(rep(0, 5), rep(4, 5)))
+result$change_point
+}

@@ -38,3 +38,7 @@ A \code{ggplot} object.
 \description{
 Visualize a time series with optional change-point markers
 }
+\examples{
+x <- c(1, 2, 3, 8, 9, 10)
+vis_time_series(x, change_points = 3L)
+}

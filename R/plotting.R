@@ -62,6 +62,9 @@ NULL
 #' @param title Plot title.
 #' @param ... Reserved for future plot options.
 #' @return A `ggplot` object.
+#' @examples
+#' x <- c(1, 2, 3, 8, 9, 10)
+#' vis_time_series(x, change_points = 3L)
 #' @export
 vis_time_series <- function(x,
                             change_points = NULL,

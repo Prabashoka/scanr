@@ -221,13 +221,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "scan-core"
+version = "0.1.0"
+dependencies = [
+ "rand",
+ "rand_xoshiro",
+ "rayon",
+ "serde",
+]
+
+[[package]]
 name = "scanr"
 version = "0.1.0"
 dependencies = [
  "extendr-api",
- "rand",
- "rand_xoshiro",
- "rayon",
+ "scan-core",
  "serde",
  "serde_json",
 ]

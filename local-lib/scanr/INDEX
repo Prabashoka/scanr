@@ -1,7 +1,9 @@
 covering_metric         Segment covering metric
 cpd_metrics             Combined change-point accuracy metrics
+default_window_sizes    Choose default scan window sizes
 f1_score_cpd            Tolerant F1 score for change-point detection
 ipm_statistic           Integral probability metric statistic
+match_change_points     Match true and estimated change points
 one_wasserstein_distance
                         One-dimensional Wasserstein distance
 precision_recall_cpd    Tolerant precision and recall for change-point
