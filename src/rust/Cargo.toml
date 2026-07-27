@@ -9,7 +9,7 @@ crate-type = ["staticlib"]
 
 [dependencies]
 extendr-api = "0.9"
-scan-core = { git = "https://github.com/Prabashoka/scan-core.git", tag = "v0.1.0" }
+scan-core = { git = "https://github.com/Prabashoka/scan-core.git", tag = "v0.2.0" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 
