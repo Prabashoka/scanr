@@ -8,7 +8,7 @@ Authors@R: c(
     person("Liam", "Hodgkinson", role = "aut"),
     person("Stuart", "Lee", role = "aut")
     )
-Description: Detects change points in univariate time series using the SCAN
+Description: Detects change points in long univariate time series using the SCAN
     framework. The implementation uses a native Rust backend exposed to R via 'extendr'.
 License: CC BY-NC-ND 4.0 + file LICENSE
 Language: en-US
