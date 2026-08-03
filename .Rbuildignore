@@ -17,3 +17,5 @@
 ^scanr_[^/]*\.tar\.gz$
 ^scanr\.Rcheck$
 ^cran-comments\.md$
+^.*\.Rproj$
+^\.Rproj\.user$

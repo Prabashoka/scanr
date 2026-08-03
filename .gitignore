@@ -24,3 +24,4 @@ target/
 .RData
 .Ruserdata
 texput.log
+.Rproj.user
