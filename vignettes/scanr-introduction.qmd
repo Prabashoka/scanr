@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 # Overview
 
-The `scanr` package detects multiple change points in univariate time series
+The `scanr` package detects multiple change points in long univariate time series
 using window-based SCAN statistics. The method compares local windows along a
 series, calibrates evidence for changes using resampling, and combines
 information across several window sizes.
@@ -59,11 +59,9 @@ from GitHub:
 
 ```{r}
 #| eval: false
-if (!requireNamespace("devtools", quietly = TRUE)) {
-  install.packages("devtools")
-}
+if (!requireNamespace("pak", quietly = TRUE)) { install.packages("pak") }
 
-devtools::install_github("Prabashoka/scanr")
+pak::pak("PrabashokaE/scanr")
 ```
 
 # Example 1 - Changes in Mean

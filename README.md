@@ -16,7 +16,15 @@ install.packages("scanr")
 
 # Or the development version from GitHub:
 # install.packages("pak")
-pak::pak("scanr")
+pak::pak("Prabashoka/scanr")
+
+Because the GitHub version is compiled from source, 
+Rust and Cargo must be installed before installing scanr.
+To check whether they are available, run:
+Sys.which(c("cargo", "rustc"))
+Both commands should return a valid file path.
+If they are not installed, follow the Rust installation
+instructions at https://rustup.rs/.
 
 ## Basic Usage
 
