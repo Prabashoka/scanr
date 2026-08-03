@@ -168,7 +168,7 @@ default_window_sizes <- function(n,
   )
 }
 
-#' Detect change points in a univariate time series
+#' Detect change points in a long univariate time series
 #'
 #' @param x Numeric vector.
 #' @param window_sizes Optional positive integer vector of scan window sizes.

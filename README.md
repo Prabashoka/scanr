@@ -92,4 +92,8 @@ fit_mean
 
 ## Reference
 
-Include the paper here..
+Include the paper here.
+
+## License
+
+This package is free and open source software, licensed under GPL-3.

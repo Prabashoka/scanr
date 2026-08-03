@@ -61,7 +61,7 @@ from GitHub:
 #| eval: false
 if (!requireNamespace("pak", quietly = TRUE)) { install.packages("pak") }
 
-pak::pak("PrabashokaE/scanr")
+pak::pak("Prabashoka/scanr")
 ```
 
 # Example 1 - Changes in Mean
