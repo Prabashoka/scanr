@@ -338,7 +338,7 @@ dataset on Kaggle, which contains minute-level OHLC prices and trading volume.
 
 ```{r}
 btc_hourly <- read.csv(
-  "https://raw.githubusercontent.com/Prabashoka/scanr-vignette/refs/heads/main/Data/BTC-hourly-data-closing-price.csv"
+  "https://github.com/Prabashoka/scanr-vignette/blob/main/Data/swat-dataset-secure-water-treatment-system/versions/3/PIT-501.csv"
 )
 
 btc_hourly$Datetime <- as.POSIXct(
@@ -377,69 +377,124 @@ x_btc <- as.numeric(scale(btc_hourly$Close))
 
 ## Detect Changes in the Mean Bitcoin Price
 
-The ensemble retains candidates whose normalized window vote is at least
-`0.21`. Bootstrap calibration uses a separate seed through `random_state`.
+This example applies change-point detection to the PIT-502 pressure sensor in
+the [Secure Water Treatment (SWaT) dataset](https://www.sutd.edu.sg/itrust/itrust-labs/datasets/dataset-characteristics/swat/).
+
+## Load the Data
 
 ```{r}
-fit_btc <- scan_cpd(
-  x_btc,
-  window_sizes = btc_window_sizes,
-  n_boot = 1000,
-  vote_threshold = 0.21,
-  random_state = 100,
-  change_type = "mean",
-  n_jobs = 1
+#| echo: false
+swat <- read.csv(
+  "https://github.com/Prabashoka/scanr-vignette/blob/main/Data/swat-dataset-secure-water-treatment-system/versions/3/PIT-501.csv",
+  check.names = FALSE,
+  strip.white = TRUE
 )
 
-fit_btc
+names(swat) <- trimws(names(swat))
+swat$Timestamp <- as.POSIXct(
+  trimws(swat$Timestamp),
+  format = "%d/%m/%Y %I:%M:%S %p",
+  tz = "Asia/Singapore"
+)
+```
+Load the dataset and resample it at one-minute intervals for change-point detection.
+```{r}
+head(swat)
 ```
 
-The detected positions can be mapped back to UTC timestamps and observed
-closing prices.
+The original signal is recorded every second. To keep this example quick to
+run, retain one observation per minute while preserving the recorded order.
 
 ```{r}
-detected_btc_changes <- btc_hourly[
-  fit_btc$change_points,
-  c("Datetime", "Close"),
+swat_minute <- swat[seq.int(1, nrow(swat), by = 60), ]
+```
+
+## Choose Window Sizes
+
+The largest candidate window is $\lfloor n^{2/3}\rfloor$. The package helper
+selects 15 default window sizes between 20 minutes and that upper bound.
+
+```{r}
+n <- nrow(swat_minute)
+window_sizes <- default_window_sizes(
+  n,
+  min_window = 100,
+  max_window = floor(n^(2 / 3)),
+  n_windows = 10,
+  seed = 400
+  
+)
+window_sizes
+```
+
+The PIT-502 measurements are standardized before detection. Standardization
+changes their units but preserves the locations of mean shifts.
+
+```{r}
+x <- as.numeric(scale(swat_minute[["PIT502"]]))
+```
+
+## Detect change-points
+
+The R interface uses `n_boot` and `random_state` for bootstrap calibration and
+reproducibility.
+
+```{r}
+fit_swat <- scan_cpd(
+  x,
+  window_sizes = window_sizes,
+  n_boot = 400,
+  vote_threshold = 0.15,
+  random_state = 100,
+  change_type = "mean",
+  n_jobs = -1
+)
+
+fit_swat
+```
+
+The fitted object stores change points as positions in the one-minute series.
+We can map those positions back to timestamps, observed pressures, and the
+dataset's operating-state labels.
+
+```{r}
+detected_changes <- swat_minute[
+  fit_swat$change_points,
+  c("Timestamp", "PIT502", "Normal/Attack"),
   drop = FALSE
 ]
 
-cat("Number of change points:", nrow(detected_btc_changes), "\n")
-detected_btc_changes
+cat("Number of change-points:", nrow(detected_changes), "\n")
 ```
 
-## Visualize the Bitcoin Results
+## Visualize the Result
 
 ```{r}
 #| fig-width: 11
 #| fig-height: 5
 
 vis_change_points(
-  x_btc,
-  fit_btc,
-  index = btc_hourly$Datetime,
-  x_label = "Date (UTC)",
-  y_label = "Standardized hourly closing price",
-  title = "Mean changes in hourly Bitcoin closing prices"
+  x,
+  fit_swat,
+  index = seq_along(x),
+  x_label = "Time",
+  y_label = "Standardized PIT-502 pressure",
+  title = "Mean changes in the SWaT PIT-502 pressure sensor"
 )
 ```
 
-The vote scree shows how the number of retained candidates changes with the
-vote threshold. The selected threshold is marked at `0.21`.
+## Inspect the Vote Scree
+
+The vote scree shows how much support each candidate location receives across
+the selected window sizes. The horizontal threshold corresponds to the
+`vote_threshold = 0.15` used above.
 
 ```{r}
 #| fig-width: 11
 #| fig-height: 5
 
-vis_vote_scree(fit_btc)
+vis_vote_scree(fit_swat)
 ```
-
-::: {.callout-caution}
-Bitcoin prices are strongly trending and serially dependent. Detected changes
-identify shifts in the mean price level; they should not be interpreted as
-causal market events.
-:::
-
 
 # SWAL Statistic for Single Change-Point Detection
 
