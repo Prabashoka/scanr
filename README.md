@@ -10,13 +10,16 @@ long time series. The R interface calls a native Rust backend through `extendr`.
 ## Installation
 
 Users can install the package from CRAN and load it as follows:
-
+```r
 install.packages("scanr")
+```
 
-
-# Or the development version from GitHub:
-# install.packages("pak")
+Alternatively, install the development version from GitHub using pak:
+```r
+install.packages("pak")
 pak::pak("Prabashoka/scanr")
+library(scanr)
+```
 
 Because the GitHub version is compiled from source, 
 Rust and Cargo must be installed before installing scanr.
