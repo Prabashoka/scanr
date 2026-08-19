@@ -160,7 +160,7 @@ The adaptive threshold for declaring a change point is derived through a
 of bootstrap samples (`n_boot`) produces a more accurate null distribution at
 the cost of longer computation time; a value of 400–1,000 is typically
 sufficient. The method supports parallel processing via
-[Rust's](https://www.rust-lang.org/) **Rayon** library for computational
+[Rust's](https://rust-lang.org/) **Rayon** library for computational
 efficiency.
 :::
 

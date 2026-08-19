@@ -7,8 +7,6 @@
 // under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // any later version.
-//
-// See the LICENSE file in the project root for the full licence text.
 
 //! Rust backend for the R `scanr` package.
 //!

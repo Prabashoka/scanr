@@ -1,0 +1,10 @@
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/Prabashoka/scan-core.git?tag=v0.2.1"]
+git = "https://github.com/Prabashoka/scan-core.git"
+tag = "v0.2.1"
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor"

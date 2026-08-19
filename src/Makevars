@@ -1,25 +1,56 @@
 CARGO = cargo
 RUST_ROOT = rust
-RUST_LIB = $(RUST_ROOT)/target/release/libscanr.a
+TARGET_DIR = $(RUST_ROOT)/target
+RUST_LIB = $(TARGET_DIR)/release/libscanr.a
+
+CARGOTMP = $(CURDIR)/.cargo
+VENDOR_DIR = $(CURDIR)/vendor
 
 PKG_LIBS = $(RUST_LIB) -ldl -lm
 
-all: $(SHLIB)
+all: $(SHLIB) rust_clean
 
 $(SHLIB): rust-version $(RUST_LIB)
 
-.PHONY: rust-version
+.PHONY: rust-version rust_clean clean
+
 rust-version:
 	$(CARGO) --version
 	rustc --version
 
 $(RUST_LIB):
-	cd $(RUST_ROOT) && \
-	R_VERSION=$$("$${R_HOME}/bin/Rscript" -e "v <- unclass(getRversion())[[1]]; cat(v[1], v[2], v[3], sep = ' ')") && \
-	set -- $$R_VERSION && \
-	$(CARGO) --version && rustc --version && \
-	DEP_R_R_VERSION_MAJOR=$$1 DEP_R_R_VERSION_MINOR=$$2 DEP_R_R_VERSION_PATCH=$$3 \
-	$(CARGO) build --lib --release --locked
+	@if [ -d "$(VENDOR_DIR)" ]; then \
+		echo "=== Using offline Rust vendor directory ==="; \
+		mkdir -p "$(CARGOTMP)"; \
+		cp "$(RUST_ROOT)/vendor-config.toml" "$(CARGOTMP)/config.toml"; \
+	elif [ -f "$(RUST_ROOT)/vendor.tar.xz" ]; then \
+		echo "=== Extracting offline Rust vendor tarball ==="; \
+		tar xf "$(RUST_ROOT)/vendor.tar.xz"; \
+		mkdir -p "$(CARGOTMP)"; \
+		cp "$(RUST_ROOT)/vendor-config.toml" "$(CARGOTMP)/config.toml"; \
+	else \
+		echo "ERROR: Rust vendor files not found."; \
+		exit 1; \
+	fi
+	@R_VERSION=$$("$${R_HOME}/bin/Rscript" -e "v <- unclass(getRversion())[[1]]; cat(v[1], v[2], v[3], sep = ' ')"); \
+	set -- $$R_VERSION; \
+	export CARGO_HOME="$(CARGOTMP)"; \
+	export PATH="$(PATH):$(HOME)/.cargo/bin"; \
+	$(CARGO) --version; \
+	rustc --version; \
+	DEP_R_R_VERSION_MAJOR=$$1 \
+	DEP_R_R_VERSION_MINOR=$$2 \
+	DEP_R_R_VERSION_PATCH=$$3 \
+	$(CARGO) build \
+		-j 2 \
+		--frozen \
+		--lib \
+		--release \
+		--manifest-path="$(RUST_ROOT)/Cargo.toml" \
+		--target-dir="$(TARGET_DIR)"
+
+rust_clean: $(SHLIB)
+	rm -Rf "$(CARGOTMP)" "$(VENDOR_DIR)" "$(TARGET_DIR)"
 
 clean:
-	cd $(RUST_ROOT) && $(CARGO) clean
+	rm -Rf "$(CARGOTMP)" "$(VENDOR_DIR)" "$(TARGET_DIR)"
