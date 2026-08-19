@@ -75,8 +75,8 @@ changes are roughly 950 observations apart. If `window_sizes` is omitted,
 ```r
 window_sizes <- default_window_sizes(
   n = length(x_mean),
-  min_window = 100L,
-  max_window = 737L,
+  min_window = 100,
+  max_window = 737,
   n_windows = 11L
 )
 window_sizes
