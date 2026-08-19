@@ -77,7 +77,7 @@ window_sizes <- default_window_sizes(
   n = length(x_mean),
   min_window = 100,
   max_window = 737,
-  n_windows = 11L
+  n_windows = 11
 )
 window_sizes
 
