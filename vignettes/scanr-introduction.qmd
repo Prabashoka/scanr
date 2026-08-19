@@ -327,54 +327,6 @@ vis_change_points(
 )
 ```
 
-# Bitcoin Dataset (BTC-USD closing prices)
-
-This example applies change-point detection to hourly Bitcoin closing prices.
-The data are derived from the
-[Bitcoin Historical Data](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data)
-dataset on Kaggle, which contains minute-level OHLC prices and trading volume.
-
-## Load the Bitcoin Data
-
-```{r}
-btc_hourly <- read.csv(
-  "https://github.com/Prabashoka/scanr-vignette/blob/main/Data/swat-dataset-secure-water-treatment-system/versions/3/PIT-501.csv"
-)
-
-btc_hourly$Datetime <- as.POSIXct(
-  btc_hourly$Datetime,
-  tz = "UTC"
-)
-
-head(btc_hourly)
-```
-
-## Choose Window Sizes
-
-The largest candidate window is set to $\lfloor n^{2/3}\rfloor$. A seed of 52
-makes the random selection of 15 window sizes reproducible.
-
-```{r}
-n_btc <- nrow(btc_hourly)
-
-btc_window_sizes <- default_window_sizes(
-  n = n_btc,
-  min_window = 100,
-  max_window = floor(n_btc^(2 / 3)),
-  n_windows = 15,
-  seed = 52
-)
-
-btc_window_sizes
-```
-
-The closing prices are standardized before detection. This changes their units
-but preserves the locations of mean shifts.
-
-```{r}
-x_btc <- as.numeric(scale(btc_hourly$Close))
-```
-
 ## Real Data Example
 
 This example applies change-point detection to the PIT-502 pressure sensor in
@@ -384,29 +336,20 @@ the [Secure Water Treatment (SWaT) dataset](https://www.sutd.edu.sg/itrust/itrus
 
 ```{r}
 #| echo: false
+swat_path <- system.file(
+  "extdata",
+  "PIT-502.csv",
+  package = "scanr"
+)
 swat <- read.csv(
-  "https://github.com/Prabashoka/scanr-vignette/blob/main/Data/swat-dataset-secure-water-treatment-system/versions/3/PIT-501.csv",
+  swat_path,
   check.names = FALSE,
   strip.white = TRUE
-)
-
-names(swat) <- trimws(names(swat))
-swat$Timestamp <- as.POSIXct(
-  trimws(swat$Timestamp),
-  format = "%d/%m/%Y %I:%M:%S %p",
-  tz = "Asia/Singapore"
 )
 ```
 Load the dataset and resample it at one-minute intervals for change-point detection.
 ```{r}
 head(swat)
-```
-
-The original signal is recorded every second. To keep this example quick to
-run, retain one observation per minute while preserving the recorded order.
-
-```{r}
-swat_minute <- swat[seq.int(1, nrow(swat), by = 60), ]
 ```
 
 ## Choose Window Sizes
@@ -415,7 +358,7 @@ The largest candidate window is $\lfloor n^{2/3}\rfloor$. The package helper
 selects 15 default window sizes between 20 minutes and that upper bound.
 
 ```{r}
-n <- nrow(swat_minute)
+n <- nrow(swat)
 window_sizes <- default_window_sizes(
   n,
   min_window = 100,
@@ -431,7 +374,7 @@ The PIT-502 measurements are standardized before detection. Standardization
 changes their units but preserves the locations of mean shifts.
 
 ```{r}
-x <- as.numeric(scale(swat_minute[["PIT502"]]))
+x <- as.numeric(scale(swat[["PIT502"]]))
 ```
 
 ## Detect change-points
@@ -458,7 +401,7 @@ We can map those positions back to timestamps, observed pressures, and the
 dataset's operating-state labels.
 
 ```{r}
-detected_changes <- swat_minute[
+detected_changes <- swat[
   fit_swat$change_points,
   c("Timestamp", "PIT502", "Normal/Attack"),
   drop = FALSE
