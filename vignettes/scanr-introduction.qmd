@@ -375,7 +375,7 @@ but preserves the locations of mean shifts.
 x_btc <- as.numeric(scale(btc_hourly$Close))
 ```
 
-## Detect Changes in the Mean Bitcoin Price
+## Real Data Example
 
 This example applies change-point detection to the PIT-502 pressure sensor in
 the [Secure Water Treatment (SWaT) dataset](https://www.sutd.edu.sg/itrust/itrust-labs/datasets/dataset-characteristics/swat/).
