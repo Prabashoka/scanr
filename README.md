@@ -6,6 +6,7 @@
 ![Linux](https://img.shields.io/badge/Linux-tested-success?logo=linux)
 ![macOS](https://img.shields.io/badge/macOS-ARM64%20%7C%20Intel-success?logo=apple)
 ![Windows](https://img.shields.io/badge/Windows-tested-success?logo=windows)
+
 `scanr` is an R package for sequential change-point detection in univariate
 long time series. The R interface calls a native Rust backend through `extendr`.
 
