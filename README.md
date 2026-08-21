@@ -2,12 +2,10 @@
 
 <img src="man/scan_logo/scanr-logo.png" align="right" width="140" alt="scanr logo">
 
-[![R-CMD-check](https://github.com/OWNER/REPO/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/R-CMD-check.yaml)
-
+[![R-CMD-check](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Prabashoka/scanr/actions/workflows/R-CMD-check.yaml)
 ![Linux](https://img.shields.io/badge/Linux-tested-success?logo=linux)
-![macOS](https://img.shields.io/badge/macOS-ARM64%20%7C%20Intel-tested-success?logo=apple)
+![macOS](https://img.shields.io/badge/macOS-ARM64%20%7C%20Intel-success?logo=apple)
 ![Windows](https://img.shields.io/badge/Windows-tested-success?logo=windows)
-
 `scanr` is an R package for sequential change-point detection in univariate
 long time series. The R interface calls a native Rust backend through `extendr`.
 
