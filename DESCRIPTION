@@ -1,7 +1,7 @@
 Package: scanr
 Type: Package
 Title: Sequential Change-Point Detection via Nonparametric Inference
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Ashoka", "Prabashwara", email = "smashoka123@gmail.com", role = c("aut", "cre")),
     person("Patricia", "Menéndez", role = "aut"),
