@@ -26,9 +26,6 @@ jobs:
           - name: macOS Intel
             os: macos-15-intel
 
-          - name: Windows
-            os: windows-latest
-
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
