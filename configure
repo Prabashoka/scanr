@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# Rust 1.85 is required for the 2024 edition used by this package.
+min_rust_version=1.85.0
+
+# rustup installs into this directory by default, but it is not always on PATH
+# in the non-interactive shell used by R CMD INSTALL.
+if test -n "${HOME}" && test -d "${HOME}/.cargo/bin"; then
+    PATH="${PATH}:${HOME}/.cargo/bin"
+    export PATH
+fi
+
+version_at_least () {
+    detected=$1
+    required=$2
+    awk -v detected="${detected}" -v required="${required}" 'BEGIN {
+        split(detected, d, ".")
+        split(required, r, ".")
+        for (i = 1; i <= 3; i++) {
+            d[i] += 0
+            r[i] += 0
+            if (d[i] > r[i]) exit 0
+            if (d[i] < r[i]) exit 1
+        }
+        exit 0
+    }'
+}
+
+check_rust_tool () {
+    tool=$1
+    required=$2
+
+    if ! command -v "${tool}" >/dev/null 2>&1; then
+        printf '%s\n' "ERROR: ${tool} was not found." >&2
+        printf '%s\n' "This package requires ${tool} >= ${required}." >&2
+        printf '%s\n' "Install Rust from https://rustup.rs/ and ensure ${tool} is on PATH." >&2
+        exit 1
+    fi
+
+    output=`"${tool}" --version 2>/dev/null`
+    status=$?
+    version=`printf '%s\n' "${output}" | awk '{ print $2 }'`
+    if test ${status} -ne 0 || test -z "${version}"; then
+        printf '%s\n' "ERROR: unable to determine the ${tool} version." >&2
+        exit 1
+    fi
+
+    if ! version_at_least "${version}" "${required}"; then
+        printf '%s\n' "ERROR: ${tool} >= ${required} is required; found ${version}." >&2
+        printf '%s\n' "Update Rust using rustup or your system package manager." >&2
+        exit 1
+    fi
+
+    printf '%s\n' "Found ${tool} ${version}."
+}
+
+check_rust_tool cargo "${min_rust_version}"
+check_rust_tool rustc "${min_rust_version}"
+
+exit 0
