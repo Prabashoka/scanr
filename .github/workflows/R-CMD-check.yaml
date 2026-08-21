@@ -27,6 +27,9 @@ jobs:
           - name: macOS Intel
             os: macos-15-intel
 
+          - name: Windows
+            os: windows-latest
+
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -38,10 +41,12 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Show Rust and system information
+        shell: bash
         run: |
           rustc --version
           cargo --version
-          uname -a
+          echo "Runner OS: $RUNNER_OS"
+          echo "Runner architecture: $RUNNER_ARCH"
 
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
