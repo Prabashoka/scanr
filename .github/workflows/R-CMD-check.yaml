@@ -10,7 +10,22 @@ permissions:
 
 jobs:
   R-CMD-check:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.config.name }}
+
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - name: Linux
+            os: ubuntu-latest
+
+          - name: macOS ARM64
+            os: macos-15
+
+          - name: macOS Intel
+            os: macos-15-intel
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -21,6 +36,12 @@ jobs:
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
+
+      - name: Show Rust and system information
+        run: |
+          rustc --version
+          cargo --version
+          uname -a
 
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
