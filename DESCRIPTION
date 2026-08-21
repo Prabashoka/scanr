@@ -15,7 +15,7 @@ Language: en-US
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
-SystemRequirements: Cargo (Rust's package manager), rustc, Quarto CLI
+SystemRequirements: Cargo (>= 1.85.0; Rust's package manager), rustc (>= 1.85.0), Quarto CLI
 Imports:
     ggplot2,
     jsonlite,
